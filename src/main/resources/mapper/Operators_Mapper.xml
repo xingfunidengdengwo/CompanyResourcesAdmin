@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.admin.dao.IOperatorsDao">
+    <!--增加记录-->
+    <insert id="addOperators" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        insert into operators(id,image,name,password,email)
+            value (#{id},#{img},#{name},#{password},#{email})
+    </insert>
+
+    <!--映射 将Java类中对应的属性映射到数据库对应的字段 属性名与字段名相同时可不写映射 主键一般用id表示 -->
+    <resultMap id="operatorsResultMap" type="com.admin.bean.Operators">
+        <id property="id" column="id"/>
+        <result property="img" column="image"/>
+        <result property="name" column="name"/>
+        <result property="password" column="password"/>
+        <result property="email" column="email"/>
+
+    </resultMap>
+
+    <!--where语句-->
+    <!--字符串尽量使用模糊查询，其他根据需求看是否需要，且字符串类型需要判断是否是空串，防止数据被空串覆盖，其他类型只需判断是否为null-->
+    <sql id="getOperatorsWhere">
+        <!-- 根据参数不同组合出不同的SQL语句  动态SQL语句 标签-->
+        <where>
+            <!-- 编写条件语句   如果where标签中有内容  会自动添加where关键字 -->
+            <if test="operators.name!= null and operators.name!= ''">
+                <!-- 重新定义参数内容 -->
+                <bind value="'%'+operators.name+'%'" name="nameText"/>
+                and name like #{nameText}
+            </if>
+            <if test="operators.email!= null and operators.email!= ''">
+                <!-- 重新定义参数内容 -->
+                <bind value="'%'+operators.email+'%'" name="emailText"/>
+                and email like #{emailText}
+            </if>
+            and is_del = 0
+        </where>
+    </sql>
+
+    <!--根据id查询一条记录用于增加记录时返回结果-->
+    <select id="getOperatorsByID" resultMap="operatorsResultMap">
+        select *
+        from operators
+        where id = #{id}
+          and is_del = 0
+    </select>
+
+    <select id="getOperatorsByName" resultMap="operatorsResultMap">
+        select id,image,name,password,email,is_del from operators where
+            name =#{name} and is_del=0
+    </select>
+
+    <!--查询所有记录-->
+    <select id="getOperators" resultMap="operatorsResultMap">
+        select * from operators
+
+        <include refid="getOperatorsWhere"/>
+
+        <if test="page.page>=0 and page.size>0">
+            limit #{page.start},#{page.size}
+        </if>
+    </select>
+
+    <!--分页计算行数-->
+    <select id="getCount" resultType="int">
+        select count(*) from operators
+        <include refid="getOperatorsWhere"/>
+    </select>
+
+
+    <!--修改记录-->
+    <update id="editOperators">
+        update operators
+        <set>
+            <if test='name!=null and name!=""'>
+                name=#{name},
+            </if>
+            <if test='newPassword!= null and newPassword!=""'>
+                password = #{newPassword},
+            </if>
+            <if test='email!=null and email!=""'>
+                email=#{email},
+            </if>
+            <if test='img!=null and img!=""'>
+                image=#{img},
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+
+    <update id="updatePassword">
+        update operators
+        <set>
+        <if test='newPassword!=null and newPassword!=""'>
+            password=#{newPassword} where name=#{name}
+        </if>
+        </set>
+    </update>
+
+    <!--删除记录-->
+    <delete id="delOperators">
+        <!-- delete from table where id=#{id} -->
+        update operators set is_del =1 where id=#{id}
+    </delete>
+
+</mapper>

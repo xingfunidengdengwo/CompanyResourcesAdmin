@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.admin.dao.IBorrowReturnDao">
+
+    <!--增加记录-->
+    <insert id="addBorrowReturn" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        insert into borrow_return(item_id, operator_id, employee_id, borrow_time, expected_return_time,actual_return_time)
+            value (#{itemId}, #{operatorId}, #{employeeId}, #{borrowTime}, #{expectedReturnTime},#{actualReturnTime})
+#         在添加和修改借还记录时，前端页面operatorId应该是不可编辑的，且添加时默认值是当前登录系统的operator！！！
+    </insert>
+
+    <!--映射 将Java类中对应的属性映射到数据库对应的字段 属性名与字段名相同时可不写映射 主键一般用id表示 -->
+    <resultMap id="borrowReturnResultMap" type="com.admin.bean.BorrowReturn">
+        <id property="id" column="id"/>
+        <result property="itemId" column="item_id"/>
+        <result property="operatorId" column="operator_id"/>
+        <result property="employeeId" column="employee_id"/>
+        <result property="borrowTime" column="borrow_time"/>
+        <result property="expectedReturnTime" column="expected_return_time"/>
+        <result property="actualReturnTime" column="actual_return_time"/>
+        <association column="item_id" javaType="com.admin.bean.Items" select="getItems" property="items"/>
+        <association column="operator_id" javaType="com.admin.bean.Operators" select="getOperators" property="operators"/>
+        <association column="employee_id" javaType="com.admin.bean.Employees" select="getEmployees" property="employees"/>
+
+    </resultMap>
+
+    <select id="getItems" resultType="com.admin.bean.Items">
+        select * from items where id=#{itemId}
+    </select>
+    <select id="getOperators" resultType="com.admin.bean.Operators">
+        select * from operators where id=#{operatorId}
+    </select>
+    <select id="getEmployees" resultType="com.admin.bean.Employees">
+        select * from employees where id=#{employeeId}
+    </select>
+
+
+    <!--where语句-->
+    <!--字符串尽量使用模糊查询，其他根据需求看是否需要，且字符串类型需要判断是否是空串，防止数据被空串覆盖，其他类型只需判断是否为null-->
+    <sql id="getBorrowReturnWhere">
+        <!-- 根据参数不同组合出不同的SQL语句  动态SQL语句 标签-->
+        <where>
+            <!-- 编写条件语句   如果where标签中有内容  会自动添加where关键字 -->
+            <if test="borrowReturn.itemId!= null and borrowReturn.itemId!= ''">
+                <!-- 重新定义参数内容 -->
+                <bind value="'%'+borrowReturn.itemId+'%'" name="itemIdText"/>
+                and item_id like #{itemIdText}
+            </if>
+            <if test="borrowReturn.operatorId!= null and borrowReturn.operatorId!= ''">
+                <bind value="'%'+borrowReturn.operatorId+'%'" name="operatorIdText"/>
+                and operator_id like #{operatorIdText}
+            </if>
+            <if test="borrowReturn.employeeId!= null and borrowReturn.employeeId!= ''">
+                <!-- 重新定义参数内容 -->
+                <bind value="'%'+borrowReturn.employeeId+'%'" name="employeeIdText"/>
+                and employee_id like #{employeeIdText}
+            </if>
+            <if test="borrowReturn.borrowTime!= null">
+                and borrow_time = #{borrowReturn.borrowTime}
+            </if>
+            <if test="borrowReturn.expectedReturnTime!= null">
+                and expected_return_time = #{borrowReturn.expectedReturnTime}
+            </if>
+            <if test="borrowReturn.actualReturnTime!= null">
+                and actual_return_time = #{borrowReturn.actualReturnTime}
+            </if>
+            and is_del = 0
+        </where>
+    </sql>
+
+    <!--根据id查询一条记录用于增加记录时返回结果-->
+    <select id="getBorrowReturnByID" resultMap="borrowReturnResultMap">
+        select *
+        from borrow_return
+        where id = #{id}
+          and is_del = 0
+    </select>
+
+    <!--根据items表id找到borrow_return表的id-->
+    <select id="getBorrowReturnIdByItemId" resultType="int">
+        select id
+        from borrow_return
+        where item_id = #{id}
+          and is_del = 0
+          and actual_return_time IS NULL
+    </select>
+
+    <!--查询所有记录-->
+    <select id="getBorrowReturn" resultMap="borrowReturnResultMap">
+        select * from borrow_return
+
+        <include refid="getBorrowReturnWhere"/>
+
+        <if test="page.page>=0 and page.size>0">
+            limit #{page.start},#{page.size}
+        </if>
+
+    </select>
+
+    <!--分页计算行数-->
+    <select id="getCount" resultType="int">
+        select count(*) from borrow_return
+        <include refid="getBorrowReturnWhere"/>
+    </select>
+
+    <!--分页计算行数-->
+    <select id="getCountUnreturned" resultType="int">
+        select count(*) from borrow_return
+        <include refid="getUnreturnedWhere"/>
+    </select>
+
+    <!--查询当前未归还的记录-->
+    <select id="getUnreturned" resultMap="borrowReturnResultMap">
+        select *
+        from borrow_return
+
+        <include refid="getUnreturnedWhere"/>
+        <if test="page.page>=0 and page.size>0">
+            limit #{page.start},#{page.size}
+        </if>
+    </select>
+
+
+    <sql id="getUnreturnedWhere">
+        <!-- 根据参数不同组合出不同的SQL语句  动态SQL语句 标签-->
+        <where>
+            actual_return_time is null
+
+            and is_del = 0
+            <!-- 编写条件语句   如果where标签中有内容  会自动添加where关键字 -->
+            <if test="borrowReturn.itemId!= null and borrowReturn.itemId!= ''">
+                <!-- 重新定义参数内容 -->
+                <bind value="'%'+borrowReturn.itemId+'%'" name="itemIdText"/>
+                and item_id like #{itemIdText}
+            </if>
+            <if test="borrowReturn.operatorId!= null and borrowReturn.operatorId!= ''">
+                <bind value="'%'+borrowReturn.operatorId+'%'" name="operatorIdText"/>
+                and operator_id like #{operatorIdText}
+            </if>
+            <if test="borrowReturn.employeeId!= null and borrowReturn.employeeId!= ''">
+                <!-- 重新定义参数内容 -->
+                <bind value="'%'+borrowReturn.employeeId+'%'" name="employeeIdText"/>
+                and employee_id like #{employeeIdText}
+            </if>
+            <if test="borrowReturn.borrowTime!= null">
+                and borrow_time = #{borrowReturn.borrowTime}
+            </if>
+            <if test="borrowReturn.expectedReturnTime!= null">
+                and expected_return_time = #{borrowReturn.expectedReturnTime}
+            </if>
+        </where>
+    </sql>
+
+    <!--修改记录-->
+    <update id="editBorrowReturn">
+        update Borrow_Return
+        <set>
+            <if test='itemId!=null and itemId !=""'>
+                item_id=#{itemId},
+            </if>
+            <if test='operatorId!=null and operatorId!=""'>
+                operator_id=#{operatorId},
+            </if>
+            <if test='employeeId!=null and employeeId !=""'>
+                employee_id=#{employeeId},
+            </if>
+            <if test='borrowTime!=null'>
+                borrow_time=#{borrowTime},
+            </if>
+            <if test='expectedReturnTime!=null'>
+                expected_return_time=#{expectedReturnTime},
+            </if>
+            <if test='actualReturnTime!=null'>
+                actual_return_time=#{actualReturnTime},
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+
+    <!--删除记录-->
+    <delete id="delBorrowReturn">
+        <!-- delete from table where id=#{id} -->
+        update borrow_return set is_del =1 where id=#{id}
+    </delete>
+
+</mapper>

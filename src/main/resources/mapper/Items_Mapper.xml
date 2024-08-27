@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.admin.dao.IItemsDao">
+    <!--增加记录-->
+    <insert id="addItems" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        insert into items(id,code,name,type_id,status)
+            value (#{id},#{code},#{name},#{typeId},#{status})
+    </insert>
+
+    <!--映射 将Java类中对应的属性映射到数据库对应的字段 属性名与字段名相同时可不写映射 主键一般用id表示 -->
+    <resultMap id="itemsResultMap" type="com.admin.bean.Items">
+        <id property="id" column="id"/>
+        <result property="code" column="code"/>
+        <result property="name" column="name"/>
+        <result property="typeId" column="type_id"/>
+        <result property="status" column="status"/>
+        <association column="type_id" javaType="com.admin.bean.ItemTypes" select="getItemTypes" property="itemTypes"/>
+    </resultMap>
+
+    <select id="getItemTypes" resultType="com.admin.bean.ItemTypes">
+        select * from item_types where id=#{typeId}
+    </select>
+
+    <!--where语句-->
+    <!--字符串尽量使用模糊查询，其他根据需求看是否需要，且字符串类型需要判断是否是空串，防止数据被空串覆盖，其他类型只需判断是否为null-->
+    <sql id="getItemsWhere">
+        <!-- 根据参数不同组合出不同的SQL语句  动态SQL语句 标签-->
+        <where>
+            <!-- 编写条件语句   如果where标签中有内容  会自动添加where关键字 -->
+            <if test="items.name!= null and items.name!= ''">
+                <!-- 重新定义参数内容 -->
+                <bind value="'%'+items.name+'%'" name="nameText"/>
+                and name like #{nameText}
+            </if>
+            <if test="items.status!= null and items.status!= ''">
+                <!-- 重新定义参数内容 -->
+                <bind value="'%'+items.status+'%'" name="statusText"/>
+                and status like #{statusText}
+            </if>
+            <if test="items.typeId!= null">
+                and type_id = #{items.typeId}
+            </if>
+            <if test="items.code!= null">
+                and code = #{items.code}
+            </if>
+            and is_del = 0
+        </where>
+    </sql>
+
+    <!--根据id查询一条记录用于增加记录时返回结果-->
+    <select id="getItemsByID" resultMap="itemsResultMap">
+        select *
+        from items
+        where id = #{id}
+          and is_del = 0
+    </select>
+
+    <!--查询所有记录-->
+    <select id="getItems" resultMap="itemsResultMap">
+        select * from items
+
+        <include refid="getItemsWhere"/>
+
+        <if test="page.page>=0 and page.size>0">
+            limit #{page.start},#{page.size}
+        </if>
+    </select>
+
+    <!--分页计算行数-->
+    <select id="getCount" resultType="int">
+        select count(*) from items
+        <include refid="getItemsWhere"/>
+    </select>
+
+
+    <!--修改记录-->
+    <update id="editItems">
+        update items
+        <set>
+            <if test='code!=null and code!=""'>
+                code=#{code},
+            </if>
+            <if test='name!=null and name!=""'>
+                name=#{name},
+            </if>
+            <if test='typeId!=null'>
+                type_id=#{typeId},
+            </if>
+            <if test='status!=null'>
+                status=#{status},
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+
+    <!--删除记录-->
+    <delete id="delItems">
+        <!-- delete from table where id=#{id} -->
+        update items set is_del =1 where id=#{id}
+    </delete>
+
+</mapper>
