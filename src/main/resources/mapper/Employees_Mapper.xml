@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.admin.dao.IEmployeesDao">
+    <!--增加记录-->
+    <insert id="addEmployees" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        insert into employees(id,name,department_id)
+            value (#{id},#{name},#{departmentId})
+    </insert>
+
+    <!--映射 将Java类中对应的属性映射到数据库对应的字段 属性名与字段名相同时可不写映射 主键一般用id表示 -->
+    <resultMap id="employeesResultMap" type="com.admin.bean.Employees">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="departmentId" column="department_id"/>
+        <association column="department_id" javaType="com.admin.bean.Departments" select="getDepartments" property="departments"/>
+    </resultMap>
+
+    <select id="getDepartments" resultType="com.admin.bean.Departments">
+        select * from departments where id=#{departmentId}
+    </select>
+
+    <!--where语句-->
+    <!--字符串尽量使用模糊查询，其他根据需求看是否需要，且字符串类型需要判断是否是空串，防止数据被空串覆盖，其他类型只需判断是否为null-->
+    <sql id="getEmployeesWhere">
+        <!-- 根据参数不同组合出不同的SQL语句  动态SQL语句 标签-->
+        <where>
+            <!-- 编写条件语句   如果where标签中有内容  会自动添加where关键字 -->
+            <if test="employees.name!= null and employees.name!= ''">
+                <!-- 重新定义参数内容 -->
+                <bind value="'%'+employees.name+'%'" name="nameText"/>
+                and name like #{nameText}
+            </if>
+            <if test="employees.departmentId!= null">
+                and department_id = #{employees.departmentId}
+            </if>
+            and is_del = 0
+        </where>
+    </sql>
+
+    <!--根据id查询一条记录用于增加记录时返回结果-->
+    <select id="getEmployeesByID" resultMap="employeesResultMap">
+        select *
+        from employees
+        where id = #{id}
+          and is_del = 0
+    </select>
+
+    <!--查询所有记录-->
+    <select id="getEmployees" resultMap="employeesResultMap">
+        select * from employees
+
+        <include refid="getEmployeesWhere"/>
+
+        <if test="page.page>=0 and page.size>0">
+            limit #{page.start},#{page.size}
+        </if>
+    </select>
+
+    <!--分页计算行数-->
+    <select id="getCount" resultType="int">
+        select count(*) from employees
+        <include refid="getEmployeesWhere"/>
+    </select>
+
+
+    <!--修改记录-->
+    <update id="editEmployees">
+        update employees
+        <set>
+            <if test='name!=null and name!=""'>
+                name=#{name},
+            </if>
+            <if test='departmentId!=null'>
+                department_id=#{departmentId},
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+
+    <!--删除记录-->
+    <delete id="delEmployees">
+        <!-- delete from table where id=#{id} -->
+        update employees set is_del =1 where id=#{id}
+    </delete>
+
+</mapper>

@@ -1,0 +1,30 @@
+spring:
+  mail:
+    host: smtp.qq.com
+    username: 2152288649@qq.com
+    password: ***REMOVED***
+
+  datasource:
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/company_resources_admin_db
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+
+logging:
+  level:
+    com.admin.dao: debug
+
+email:
+  from: 2152288649@qq.com
+  subject: 验证码
+  context_prefix: "<h4>您正在修改密码，验证码为：<i><u>"
+  context_suffix: "</u></i>，</h4>
+  <h4>验证码有效时间为5分钟！</h4>
+  <h4>如非本人操作，请忽略本邮件，验证码请勿泄露于他人！</h4>
+  <h4>感谢您的支持！</h4>"
+
+
+

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.admin.dao.IMaintenanceDao">
+    <!--增加记录-->
+    <insert id="addMaintenance" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        insert into maintenance(id,item_id,start_time,end_time,description)
+            value (#{id},#{itemId},#{startTime},#{endTime},#{description})
+    </insert>
+
+    <!--映射 将Java类中对应的属性映射到数据库对应的字段 属性名与字段名相同时可不写映射 主键一般用id表示 -->
+    <resultMap id="maintenanceResultMap" type="com.admin.bean.Maintenance">
+        <id property="id" column="id"/>
+        <result property="itemId" column="item_id"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="description" column="description"/>
+        <association column="item_id" javaType="com.admin.bean.Items" select="getItems" property="items"/>
+    </resultMap>
+
+    <select id="getItems" resultType="com.admin.bean.Items">
+        select * from items where id=#{itemId}
+    </select>
+
+    <!--where语句-->
+    <!--字符串尽量使用模糊查询，其他根据需求看是否需要，且字符串类型需要判断是否是空串，防止数据被空串覆盖，其他类型只需判断是否为null-->
+    <sql id="getMaintenanceWhere">
+        <!-- 根据参数不同组合出不同的SQL语句  动态SQL语句 标签-->
+        <where>
+            <!-- 编写条件语句   如果where标签中有内容  会自动添加where关键字 -->
+            <if test="maintenance.description!= null and maintenance.description!= ''">
+                <!-- 重新定义参数内容 -->
+                <bind value="'%'+maintenance.description+'%'" name="descriptionText"/>
+                and description like #{descriptionText}
+            </if>
+            <if test="maintenance.itemId!= null">
+                and item_id = #{maintenance.itemId}
+            </if>
+            <if test="maintenance.startTime!= null">
+                and start_time = #{maintenance.startTime}
+            </if>
+            <if test="maintenance.endTime!= null">
+                and end_time = #{maintenance.endTime}
+            </if>
+            and is_del = 0
+        </where>
+    </sql>
+
+    <!--根据id查询一条记录用于增加记录时返回结果-->
+    <select id="getMaintenanceByID" resultMap="maintenanceResultMap">
+        select *
+        from maintenance
+        where id = #{id}
+          and is_del = 0
+    </select>
+
+    <!--根据物品id找维修id-->
+    <select id="getMaintenanceIdByItemId" resultType="int">
+        select id
+        from maintenance
+        where item_id = #{id}
+          and is_del = 0
+          and end_time is null
+    </select>
+
+    <!--查询所有记录-->
+    <select id="getMaintenance" resultMap="maintenanceResultMap">
+        select * from maintenance
+
+        <include refid="getMaintenanceWhere"/>
+
+        <if test="page.page>=0 and page.size>0">
+            limit #{page.start},#{page.size}
+        </if>
+    </select>
+
+    <!--分页计算行数-->
+    <select id="getCount" resultType="int">
+        select count(*) from maintenance
+        <include refid="getMaintenanceWhere"/>
+    </select>
+
+
+    <!--修改记录-->
+    <update id="editMaintenance">
+        update maintenance
+        <set>
+            <if test='itemId!=null and itemId!=""'>
+                item_id=#{itemId},
+            </if>
+            <if test="startTime!= null">
+                start_time = #{startTime},
+            </if>
+            <if test="endTime!= null">
+                end_time = #{endTime},
+            </if>
+            <if test='description!=null and description !=""'>
+                description=#{description},
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+
+    <!--删除记录-->
+    <delete id="delMaintenance">
+        <!-- delete from table where id=#{id} -->
+        update maintenance set is_del =1 where id=#{id}
+    </delete>
+
+</mapper>
