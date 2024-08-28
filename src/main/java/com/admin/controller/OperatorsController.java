@@ -41,7 +41,7 @@ public class OperatorsController {
             operators = operatorsService.getOperatorsByID(operators.getId());
             return CommonResult.success(200, "注册成功", operators);
         } else {
-            return CommonResult.success(400, "注册失败");
+            return CommonResult.success(400, "用户名已存在");
         }
     }
 
@@ -120,7 +120,7 @@ public class OperatorsController {
         return CommonResult.success(count);
     }
 
-    //验证输入的邮箱验证码是否正确
+    //验证输入的邮箱验证码是否正确并修改密码
     @PutMapping("validatecode")
     public CommonResult validatecode(@RequestBody Operators operators) {
         System.out.println(operators.getEmailVcode().equals(Vcode));
