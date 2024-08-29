@@ -24,4 +24,6 @@ public interface IOperatorsDao {
     List<Operators> getOperatorsByName(String name);
 
     void updatePassword(Operators operators);
+
+    List<Operators> getOperatorsByEmail(String email);
 }

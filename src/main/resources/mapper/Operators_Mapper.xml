@@ -52,6 +52,11 @@
             name =#{name} and is_del=0
     </select>
 
+    <select id="getOperatorsByEmail" resultMap="operatorsResultMap">
+        select id,image,name,password,email,is_del from operators where
+            email =#{email} and is_del=0
+    </select>
+
     <!--查询所有记录-->
     <select id="getOperators" resultMap="operatorsResultMap">
         select * from operators

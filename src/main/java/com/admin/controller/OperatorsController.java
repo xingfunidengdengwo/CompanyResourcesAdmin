@@ -33,15 +33,36 @@ public class OperatorsController {
     @Autowired
     private MsgService msgService;
 
-    //增加
+    //验证输入的邮箱验证码是否正确并添加用户
     @PostMapping("operators")
     public CommonResult addOperators(@RequestBody Operators operators) {
-        int result = operatorsService.addOperators(operators);
-        if (result == 1) {
-            operators = operatorsService.getOperatorsByID(operators.getId());
-            return CommonResult.success(200, "注册成功", operators);
+        if (operators.getEmailVcode().equals(Vcode)) {
+            int result = operatorsService.addOperators(operators);
+            if (result == 1) {
+                operators = operatorsService.getOperatorsByID(operators.getId());
+                return CommonResult.success(200, "注册成功", operators);
+            } else {
+                return CommonResult.success(400, "用户名已存在");
+            }
         } else {
-            return CommonResult.success(400, "用户名已存在");
+            return CommonResult.fail(400, "邮箱验证码不正确");
+        }
+    }
+
+    //发送注册账户邮箱验证码消息
+    @PostMapping("sendregistermsg")
+    public CommonResult sendRegisterMsg(@RequestBody Operators operators) {
+        Object obj1 = operatorsService.getOperatorsByName(operators.getName());
+        Object obj2 = operatorsService.getOperatorsByEmail(operators.getEmail());
+        if (obj1 != null) {
+            return CommonResult.fail(400, "用户已存在");
+        }if(obj2 != null) {
+            return CommonResult.fail(401,"邮箱已存在");
+        }
+        else {
+            email.setTo(operators.getEmail());
+            msgService.sendMsg(Vcode);
+            return CommonResult.success(operators);
         }
     }
 
@@ -124,17 +145,15 @@ public class OperatorsController {
     @PutMapping("validatecode")
     public CommonResult validatecode(@RequestBody Operators operators) {
         System.out.println(operators.getEmailVcode().equals(Vcode));
-
         if (operators.getEmailVcode().equals(Vcode)) {
             boolean f = operatorsService.updatePassword(operators);
-
             return CommonResult.success(operators);
         } else {
             return CommonResult.fail(400, "邮箱验证码不正确");
         }
     }
 
-    //发送邮箱验证码消息
+    //发送重置密码邮箱验证码消息
     @PostMapping("sendmsg")
     public CommonResult sendMsg(@RequestBody Operators operators) {
         operators = operatorsService.getOperatorsByName(operators.getName());
