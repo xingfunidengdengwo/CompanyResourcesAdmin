@@ -99,6 +99,16 @@ public class OperatorsService implements IOperatorsService {
         return operatorsDao.editOperators(operators);
     }
 
+    @Override
+    public Operators getOperatorsByEmail(String email) {
+        int size=operatorsDao.getOperatorsByEmail(email).size();
+        if(size>0) {
+            return operatorsDao.getOperatorsByEmail(email).get(0);
+        }else {
+            return null;
+        }
+    }
+
     private boolean eqPassword(String password, String password_data) {
         return password.equals(password_data);
     }

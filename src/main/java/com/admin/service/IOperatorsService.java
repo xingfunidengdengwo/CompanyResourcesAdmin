@@ -27,4 +27,5 @@ public interface IOperatorsService {
 
     int operatorsImg(Operators operators);
 
+    Operators getOperatorsByEmail(String email);
 }
