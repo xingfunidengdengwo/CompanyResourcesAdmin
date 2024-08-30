@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.admin.dao.IBorrowChartsDao">
+
+    <select id="getBorrowCharts" resultMap="borrowChartsResultMap">
+        select COUNT(item_types.`name`) as `count`, item_types.`name` as `typeName`
+        from borrow_return
+                 LEFT JOIN items on borrow_return.item_id = items.id
+                 LEFT JOIN item_types on item_types.id = items.type_id
+        where items.is_del=0 and item_types.is_del=0 and borrow_return.is_del=0
+        GROUP BY item_types.`name`
+    </select>
+
+    <resultMap id="borrowChartsResultMap" type="com.admin.bean.BorrowCharts">
+        <id property="count" column="count"/>
+        <id property="typeName" column="typeName"/>
+    </resultMap>
+
+</mapper>
