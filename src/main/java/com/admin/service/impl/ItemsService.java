@@ -31,13 +31,17 @@ public class ItemsService implements IItemsService {
 
     @Override
     public int editItems(Items items) {
-        List<Items> list = itemsDao.getItemsByName(items.getName());
-        if (list.size() == 0) {
-            int count = 0;
-            count = itemsDao.editItems(items);
-            return count;
+        int count = 0;
+        if (getItemsByID(items.getId()).getName().equals(items.getName())) {
+           return itemsDao.editItems(items);
         } else {
-            return 0;
+            List<Items> list = itemsDao.getItemsByName(items.getName());
+            if (list.size() == 0) {
+                count = itemsDao.editItems(items);
+                return count;
+            } else {
+                return 0;
+            }
         }
     }
 

@@ -31,6 +31,9 @@ public class DepartmentsService implements IDepartmentsService {
 
     @Override
     public int editDepartments(Departments departments) {
+        if(getDepartmentsByID(departments.getId()).getName().equals(departments.getName())) {
+            return departmentsDao.editDepartments(departments);
+        }else{
         List<Departments> list=departmentsDao.getDepartmentsByName(departments.getName());
         if(list.size()==0){
             int count=0;
@@ -38,7 +41,7 @@ public class DepartmentsService implements IDepartmentsService {
             return count;
         }else {
             return 0;
-        }
+        }}
     }
 
     @Override

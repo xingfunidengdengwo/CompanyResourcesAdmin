@@ -30,6 +30,9 @@ public class EmployeesService implements IEmployeesService {
 
     @Override
     public int editEmployees(Employees employees) {
+        if(getEmployeesByID(employees.getId()).getName().equals(employees.getName()) ) {
+            return employeesDao.editEmployees(employees);
+        }else {
         List<Employees> list=employeesDao.getEmployeesByName(employees.getName());
         if(list.size()==0){
             int count=0;
@@ -37,6 +40,7 @@ public class EmployeesService implements IEmployeesService {
         return count;
         }else {
             return 0;
+        }
         }
     }
 
