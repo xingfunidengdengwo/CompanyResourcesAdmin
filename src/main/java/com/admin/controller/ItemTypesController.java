@@ -18,9 +18,13 @@ public class ItemTypesController {
     //增加
     @PostMapping("itemtypes")
     public CommonResult addItemTypes(@RequestBody ItemTypes itemTypes) {
-        itemTypesService.addItemTypes(itemTypes);
+        int result=itemTypesService.addItemTypes(itemTypes);
+        if(result==1){
         itemTypes = itemTypesService.getItemTypesByID(itemTypes.getId());
         return CommonResult.success(itemTypes);
+        }else{
+            return  CommonResult.fail(400,"分类已存在");
+        }
     }
 
     //分页模糊查询
@@ -39,8 +43,12 @@ public class ItemTypesController {
     @PutMapping("itemtypes")
     public CommonResult editItemTypes(@RequestBody ItemTypes itemTypes) {
         int count = itemTypesService.editItemTypes(itemTypes);
+        if(count==1){
         itemTypes = itemTypesService.getItemTypesByID(itemTypes.getId());
         return CommonResult.success(itemTypes);
+        }else{
+            return  CommonResult.fail(400,"分类已存在");
+        }
     }
 
     //删除

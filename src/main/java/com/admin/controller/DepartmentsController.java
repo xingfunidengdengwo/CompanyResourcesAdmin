@@ -21,9 +21,14 @@ public class DepartmentsController {
     //增加
     @PostMapping("departments")
     public CommonResult addDepartments(@RequestBody Departments departments) {
-        departmentsService.addDepartments(departments);
+        int result=departmentsService.addDepartments(departments);
+        if(result==1){
         departments = departmentsService.getDepartmentsByID(departments.getId());
         return CommonResult.success(departments);
+        }
+        else {
+            return CommonResult.fail(400,"部门已存在");
+        }
     }
 
     //分页模糊查询
@@ -42,8 +47,12 @@ public class DepartmentsController {
     @PutMapping("departments")
     public CommonResult editDepartments(@RequestBody Departments departments) {
         int count = departmentsService.editDepartments(departments);
+        if(count==1){
         departments = departmentsService.getDepartmentsByID(departments.getId());
         return CommonResult.success(departments);
+        }else {
+            return  CommonResult.fail(400,"部门已存在");
+        }
     }
 
     //删除

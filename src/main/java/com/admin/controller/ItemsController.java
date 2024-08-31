@@ -18,9 +18,13 @@ public class ItemsController {
     //增加
     @PostMapping("items")
     public CommonResult addItems(@RequestBody Items items) {
-        itemsService.addItems(items);
+        int result=itemsService.addItems(items);
+        if(result==1){
         items = itemsService.getItemsByID(items.getId());
         return CommonResult.success(items);
+        }else {
+            return CommonResult.fail(400,"物品已存在");
+        }
     }
 
     //分页模糊查询
@@ -39,8 +43,12 @@ public class ItemsController {
     @PutMapping("items")
     public CommonResult editItems(@RequestBody Items items) {
         int count = itemsService.editItems(items);
+        if(count==1){
         items = itemsService.getItemsByID(items.getId());
         return CommonResult.success(items);
+        }else {
+            return CommonResult.fail(400,"物品已存在");
+        }
     }
 
     //删除

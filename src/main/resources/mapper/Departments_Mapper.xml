@@ -50,7 +50,11 @@
     </select>
 
     <select id="getEmployeesByDepartmentId" resultType="int">
-        select count(*) from employees where department_id=#{id}
+        select count(*) from employees where department_id=#{id} and is_del=0
+    </select>
+
+    <select id="getDepartmentsByName" resultMap="departmentsResultMap">
+        select * from departments where name=#{name} and is_del=0
     </select>
 
     <!--分页计算行数-->

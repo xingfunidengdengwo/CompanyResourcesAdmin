@@ -21,5 +21,5 @@ public interface IEmployeesDao {
 
     int editEmployees(Employees employees);
 
-
+    List<Employees> getEmployeesByName(String name);
 }

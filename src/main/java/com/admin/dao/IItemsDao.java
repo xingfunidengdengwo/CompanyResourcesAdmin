@@ -21,5 +21,5 @@ public interface IItemsDao {
 
     int editItems(Items items);
 
-
+    List<Items> getItemsByName(String name);
 }

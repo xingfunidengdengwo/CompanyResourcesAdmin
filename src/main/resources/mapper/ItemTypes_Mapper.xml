@@ -38,6 +38,13 @@
           and is_del = 0
     </select>
 
+    <select id="getItemTypesByName" resultMap="itemTypesResultMap">
+        select *
+        from item_types
+        where name = #{name}
+          and is_del = 0
+    </select>
+
     <!--查询所有记录-->
     <select id="getItemTypes" resultMap="itemTypesResultMap">
         select * from item_types

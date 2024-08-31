@@ -37,7 +37,11 @@ public class OperatorsService implements IOperatorsService {
         int count = 0;
         System.out.println("原密码是"+operators.getOriginalPassword());
         if (operators.getPassword().equals(operators.getOriginalPassword()) ){
+            List<Operators> list =operatorsDao.getOperatorsByName(operators.getName());
+            if(list.size()==0){
             count = operatorsDao.editOperators(operators);
+            return count;
+            }
         }
         System.out.println(count);
         return count;
