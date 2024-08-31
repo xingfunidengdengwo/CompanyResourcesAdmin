@@ -13,6 +13,7 @@ import java.util.List;
 public class ItemTypesService implements IItemTypesService {
     @Autowired
     IItemTypesDao itemTypesDao;
+
     @Override
     public ItemTypes getItemTypesByID(int id) {
         return itemTypesDao.getItemTypesByID(id);
@@ -20,7 +21,7 @@ public class ItemTypesService implements IItemTypesService {
 
     @Override
     public List<ItemTypes> getItemTypes(ItemTypes itemTypes, Page page) {
-        return itemTypesDao.getItemTypes(itemTypes,page);
+        return itemTypesDao.getItemTypes(itemTypes, page);
     }
 
     @Override
@@ -30,13 +31,17 @@ public class ItemTypesService implements IItemTypesService {
 
     @Override
     public int editItemTypes(ItemTypes itemTypes) {
-        List<ItemTypes> list=itemTypesDao.getItemTypesByName(itemTypes.getName());
-        if (list.size()==0) {
-            int count=0;
-            count = itemTypesDao.editItemTypes(itemTypes);
-            return count;
-        }else {
-            return 0;
+        if (getItemTypesByID(itemTypes.getId()).getName().equals(itemTypes.getName())) {
+            return itemTypesDao.editItemTypes(itemTypes);
+        } else {
+            List<ItemTypes> list = itemTypesDao.getItemTypesByName(itemTypes.getName());
+            if (list.size() == 0) {
+                int count = 0;
+                count = itemTypesDao.editItemTypes(itemTypes);
+                return count;
+            } else {
+                return 0;
+            }
         }
     }
 
@@ -47,14 +52,13 @@ public class ItemTypesService implements IItemTypesService {
     }
 
 
-
     @Override
     public int addItemTypes(ItemTypes itemTypes) {
-        List<ItemTypes> list=itemTypesDao.getItemTypesByName(itemTypes.getName());
-        if (list.size()==0) {
+        List<ItemTypes> list = itemTypesDao.getItemTypesByName(itemTypes.getName());
+        if (list.size() == 0) {
             itemTypesDao.addItemTypes(itemTypes);
             return 1;
-        }else{
+        } else {
             return 0;
         }
     }

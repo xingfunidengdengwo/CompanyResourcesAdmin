@@ -35,16 +35,22 @@ public class OperatorsService implements IOperatorsService {
     @Override
     public int editOperators(Operators operators) {
         int count = 0;
-        System.out.println("原密码是"+operators.getOriginalPassword());
-        if (operators.getPassword().equals(operators.getOriginalPassword()) ){
-            List<Operators> list =operatorsDao.getOperatorsByName(operators.getName());
-            if(list.size()==0){
-            count = operatorsDao.editOperators(operators);
-            return count;
+        System.out.println("原密码是" + operators.getOriginalPassword());
+        if (operators.getPassword().equals(operators.getOriginalPassword())) {
+            if (getOperatorsByID(operators.getId()).getName().equals(operators.getName())) {
+                return operatorsDao.editOperators(operators);
+            } else {
+                List<Operators> list = operatorsDao.getOperatorsByName(operators.getName());
+                if (list.size() == 0) {
+                    count = operatorsDao.editOperators(operators);
+                    return count;
+                } else {
+                    return count;
+                }
             }
+        } else {
+            return count;
         }
-        System.out.println(count);
-        return count;
     }
 
 
@@ -66,7 +72,7 @@ public class OperatorsService implements IOperatorsService {
             System.out.println("密码是否匹配" + bool);
             if (bool) {
                 // 3.生成token
-                String token= JWTUtil.createToken(null);
+                String token = JWTUtil.createToken(null);
                 map.put("token", token);
                 map.put("operators", operators_data);
                 System.out.println(operators_data);
@@ -78,19 +84,19 @@ public class OperatorsService implements IOperatorsService {
 
     @Override
     public Operators getOperatorsByName(String name) {
-        int size=operatorsDao.getOperatorsByName(name).size();
-        if(size>0) {
+        int size = operatorsDao.getOperatorsByName(name).size();
+        if (size > 0) {
             return operatorsDao.getOperatorsByName(name).get(0);
-        }else {
+        } else {
             return null;
         }
     }
 
     @Override
     public boolean updatePassword(Operators operators) {
-        List<Operators> list =operatorsDao.getOperatorsByName(operators.getName());
+        List<Operators> list = operatorsDao.getOperatorsByName(operators.getName());
         Operators operators1 = list.get(0);
-        if(operators1==null){
+        if (operators1 == null) {
             return false;
         }
         operators.setPassword(operators.getNewPassword());
@@ -105,10 +111,10 @@ public class OperatorsService implements IOperatorsService {
 
     @Override
     public Operators getOperatorsByEmail(String email) {
-        int size=operatorsDao.getOperatorsByEmail(email).size();
-        if(size>0) {
+        int size = operatorsDao.getOperatorsByEmail(email).size();
+        if (size > 0) {
             return operatorsDao.getOperatorsByEmail(email).get(0);
-        }else {
+        } else {
             return null;
         }
     }
@@ -119,11 +125,11 @@ public class OperatorsService implements IOperatorsService {
 
     @Override
     public int addOperators(Operators operators) {
-        List<Operators> list =operatorsDao.getOperatorsByName(operators.getName());
-        if(list.size()==0){
+        List<Operators> list = operatorsDao.getOperatorsByName(operators.getName());
+        if (list.size() == 0) {
             operatorsDao.addOperators(operators);
             return 1;
-        }else {
+        } else {
             return 0;
         }
     }
