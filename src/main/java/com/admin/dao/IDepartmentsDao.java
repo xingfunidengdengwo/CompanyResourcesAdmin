@@ -22,4 +22,6 @@ public interface IDepartmentsDao {
     int editDepartments(Departments departments);
 
     int getEmployeesByDepartmentId(int id);
+
+    List<Departments> getDepartmentsByName(String name);
 }

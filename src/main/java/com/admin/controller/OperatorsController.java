@@ -85,7 +85,7 @@ public class OperatorsController {
         if (count != 0) {
             return CommonResult.success(operators);
         } else {
-            return CommonResult.fail(400, "原密码错误", operators);
+            return CommonResult.fail(400, "原密码错误或用户名已存在", operators);
         }
     }
 

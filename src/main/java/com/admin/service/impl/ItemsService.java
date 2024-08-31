@@ -13,6 +13,7 @@ import java.util.List;
 public class ItemsService implements IItemsService {
     @Autowired
     IItemsDao itemsDao;
+
     @Override
     public Items getItemsByID(int id) {
         return itemsDao.getItemsByID(id);
@@ -20,7 +21,7 @@ public class ItemsService implements IItemsService {
 
     @Override
     public List<Items> getItems(Items items, Page page) {
-        return itemsDao.getItems(items,page);
+        return itemsDao.getItems(items, page);
     }
 
     @Override
@@ -30,8 +31,14 @@ public class ItemsService implements IItemsService {
 
     @Override
     public int editItems(Items items) {
-        int count = itemsDao.editItems(items);
-        return count;
+        List<Items> list = itemsDao.getItemsByName(items.getName());
+        if (list.size() == 0) {
+            int count = 0;
+            count = itemsDao.editItems(items);
+            return count;
+        } else {
+            return 0;
+        }
     }
 
     @Override
@@ -41,9 +48,14 @@ public class ItemsService implements IItemsService {
     }
 
 
-
     @Override
     public int addItems(Items items) {
-        return itemsDao.addItems(items);
+        List<Items> list = itemsDao.getItemsByName(items.getName());
+        if (list.size() == 0) {
+            itemsDao.addItems(items);
+            return 1;
+        }else{
+            return 0;
+        }
     }
 }

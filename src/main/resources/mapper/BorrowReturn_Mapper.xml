@@ -27,13 +27,13 @@
     </resultMap>
 
     <select id="getItems" resultType="com.admin.bean.Items">
-        select * from items where id=#{itemId}
+        select * from items where id=#{itemId} and is_del=0
     </select>
     <select id="getOperators" resultType="com.admin.bean.Operators">
-        select * from operators where id=#{operatorId}
+        select * from operators where id=#{operatorId} and is_del=0
     </select>
     <select id="getEmployees" resultType="com.admin.bean.Employees">
-        select * from employees where id=#{employeeId}
+        select * from employees where id=#{employeeId} and is_del=0
     </select>
 
 

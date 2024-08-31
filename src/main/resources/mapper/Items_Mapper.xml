@@ -74,6 +74,13 @@
         <include refid="getItemsWhere"/>
     </select>
 
+    <select id="getItemsByName" resultMap="itemsResultMap">
+        select *
+        from items
+        where name = #{name}
+          and is_del = 0
+    </select>
+
 
     <!--修改记录-->
     <update id="editItems">

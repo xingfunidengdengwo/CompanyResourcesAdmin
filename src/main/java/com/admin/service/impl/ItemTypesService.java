@@ -30,8 +30,14 @@ public class ItemTypesService implements IItemTypesService {
 
     @Override
     public int editItemTypes(ItemTypes itemTypes) {
-        int count = itemTypesDao.editItemTypes(itemTypes);
-        return count;
+        List<ItemTypes> list=itemTypesDao.getItemTypesByName(itemTypes.getName());
+        if (list.size()==0) {
+            int count=0;
+            count = itemTypesDao.editItemTypes(itemTypes);
+            return count;
+        }else {
+            return 0;
+        }
     }
 
     @Override
@@ -44,6 +50,12 @@ public class ItemTypesService implements IItemTypesService {
 
     @Override
     public int addItemTypes(ItemTypes itemTypes) {
-        return itemTypesDao.addItemTypes(itemTypes);
+        List<ItemTypes> list=itemTypesDao.getItemTypesByName(itemTypes.getName());
+        if (list.size()==0) {
+            itemTypesDao.addItemTypes(itemTypes);
+            return 1;
+        }else{
+            return 0;
+        }
     }
 }

@@ -31,8 +31,14 @@ public class DepartmentsService implements IDepartmentsService {
 
     @Override
     public int editDepartments(Departments departments) {
-        int count = departmentsDao.editDepartments(departments);
-        return count;
+        List<Departments> list=departmentsDao.getDepartmentsByName(departments.getName());
+        if(list.size()==0){
+            int count=0;
+            count = departmentsDao.editDepartments(departments);
+            return count;
+        }else {
+            return 0;
+        }
     }
 
     @Override
@@ -51,6 +57,13 @@ public class DepartmentsService implements IDepartmentsService {
 
     @Override
     public int addDepartments(Departments departments) {
-        return departmentsDao.addDepartments(departments);
+        List<Departments> list=departmentsDao.getDepartmentsByName(departments.getName());
+        System.out.println(list);
+        if(list.size()==0){
+            departmentsDao.addDepartments(departments);
+            return 1;
+        }else {
+            return 0;
+        }
     }
 }
