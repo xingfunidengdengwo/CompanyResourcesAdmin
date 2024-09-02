@@ -59,7 +59,7 @@
 
     <!--查询所有记录-->
     <select id="getOperators" resultMap="operatorsResultMap">
-        select * from operators
+        select id, image, name, email from operators
 
         <include refid="getOperatorsWhere"/>
 
