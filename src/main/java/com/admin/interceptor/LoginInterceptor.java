@@ -30,7 +30,9 @@ public class LoginInterceptor implements HandlerInterceptor {
            CommonResult result=CommonResult.fail(400,"未登录");
             //将数据解析成json
            String json= JSON.toJSONString(result);
+           System.out.println(json);
            //将数据回应
+           response.setCharacterEncoding("UTF-8");
            response.getWriter().write(json);
            return false;
        }
