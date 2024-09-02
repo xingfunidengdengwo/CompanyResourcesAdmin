@@ -36,7 +36,7 @@ public class OperatorsService implements IOperatorsService {
     public int editOperators(Operators operators) {
         int count = 0;
         System.out.println("原密码是" + operators.getOriginalPassword());
-        if (operators.getPassword().equals(operators.getOriginalPassword())) {
+        if (getOperatorsByID(operators.getId()).getPassword().equals(operators.getOriginalPassword())) {
             if (getOperatorsByID(operators.getId()).getName().equals(operators.getName())) {
                 return operatorsDao.editOperators(operators);
             } else {

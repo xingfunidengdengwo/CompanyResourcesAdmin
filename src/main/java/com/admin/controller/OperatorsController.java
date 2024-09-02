@@ -36,11 +36,12 @@ public class OperatorsController {
     //验证输入的邮箱验证码是否正确并添加用户
     @PostMapping("operators")
     public CommonResult addOperators(@RequestBody Operators operators) {
+        //验证验证码是否正确
         if (operators.getEmailVcode().equals(Vcode)) {
             int result = operatorsService.addOperators(operators);
             if (result == 1) {
                 operators = operatorsService.getOperatorsByID(operators.getId());
-                return CommonResult.success(200, "注册成功", operators);
+                return CommonResult.success(200, "注册成功");
             } else {
                 return CommonResult.success(400, "用户名已存在");
             }
@@ -62,7 +63,7 @@ public class OperatorsController {
         else {
             email.setTo(operators.getEmail());
             msgService.sendMsg(Vcode);
-            return CommonResult.success(operators);
+            return CommonResult.success();
         }
     }
 
@@ -85,7 +86,7 @@ public class OperatorsController {
         if (count != 0) {
             return CommonResult.success(operators);
         } else {
-            return CommonResult.fail(400, "原密码错误或用户名已存在", operators);
+            return CommonResult.fail(400, "原密码错误或用户名已存在");
         }
     }
 
@@ -115,8 +116,8 @@ public class OperatorsController {
     public CommonResult checkToken(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
         if (token != null && JWTUtil.verifyToken(token)) {
-            System.out.println("浏览器持有token   " + token);
-            return CommonResult.success(200, "持有token");
+            System.out.println("浏览器持有有效token   " + token);
+            return CommonResult.success(200, "持有有效token");
         }
         return CommonResult.fail(400, "token不存在或不合法");
     }
@@ -147,7 +148,7 @@ public class OperatorsController {
         System.out.println(operators.getEmailVcode().equals(Vcode));
         if (operators.getEmailVcode().equals(Vcode)) {
             boolean f = operatorsService.updatePassword(operators);
-            return CommonResult.success(operators);
+            return CommonResult.success();
         } else {
             return CommonResult.fail(400, "邮箱验证码不正确");
         }
@@ -160,7 +161,7 @@ public class OperatorsController {
         if (operators != null) {
             email.setTo(operators.getEmail());
             msgService.sendMsg(Vcode);
-            return CommonResult.success(operators);
+            return CommonResult.success();
         } else {
             return CommonResult.fail(400, "用户不存在");
         }
