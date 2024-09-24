@@ -40,7 +40,7 @@ public class OperatorsController {
         if (operators.getEmailVcode().equals(Vcode)) {
             int result = operatorsService.addOperators(operators);
             if (result == 1) {
-                operators = operatorsService.getOperatorsByID(operators.getId());
+                //operators = operatorsService.getOperatorsByID(operators.getId());
                 return CommonResult.success(200, "注册成功");
             } else {
                 return CommonResult.success(400, "用户名已存在");
