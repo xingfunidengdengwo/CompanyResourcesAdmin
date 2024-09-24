@@ -147,7 +147,7 @@ public class OperatorsController {
     public CommonResult validatecode(@RequestBody Operators operators) {
         System.out.println(operators.getEmailVcode().equals(Vcode));
         if (operators.getEmailVcode().equals(Vcode)) {
-            boolean f = operatorsService.updatePassword(operators);
+            operatorsService.updatePassword(operators);
             return CommonResult.success();
         } else {
             return CommonResult.fail(400, "邮箱验证码不正确");
