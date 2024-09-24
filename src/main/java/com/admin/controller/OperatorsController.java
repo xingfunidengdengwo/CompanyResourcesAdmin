@@ -128,11 +128,10 @@ public class OperatorsController {
         System.out.println(file);
         //存储文件
         String newName = UploadFileUtil.uploadfile(file);
-        //将文件 地址存入数据库
         //返回上传文件的地址 or 返回上传头像的员工数据
         return CommonResult.success(Config.STATIC_PATH + newName);
     }
-
+    //将文件地址存入数据库
     @PutMapping("operatorsimg")
     public CommonResult operatorsimg(Operators operators) {
         System.out.println(operators.getId());
