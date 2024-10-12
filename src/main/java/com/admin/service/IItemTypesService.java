@@ -19,4 +19,5 @@ public interface IItemTypesService {
     int delItemTypes(int id);
 
 
+    int getItemsByItemTypeID(int id);
 }

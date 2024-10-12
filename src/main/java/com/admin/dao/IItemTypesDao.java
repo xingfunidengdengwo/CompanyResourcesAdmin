@@ -22,4 +22,6 @@ public interface IItemTypesDao {
     int editItemTypes(ItemTypes itemTypes);
 
     List<ItemTypes> getItemTypesByName(String name);
+
+    int getItemsByItemTypeID(int id);
 }
