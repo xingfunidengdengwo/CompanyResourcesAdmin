@@ -54,11 +54,15 @@ public class ItemTypesController {
     //删除
     @DeleteMapping("itemtypes/{id}")
     public CommonResult delItemTypes(@PathVariable int id) {
+        int result=itemTypesService.getItemsByItemTypeID(id);
+        if(result==0){
         int count = itemTypesService.delItemTypes(id);
         if (count > 0) {
             return CommonResult.success();
         } else {
             return CommonResult.fail();
         }
+    }
+        return CommonResult.fail(400, "分类下有物品不能删除");
     }
 }
