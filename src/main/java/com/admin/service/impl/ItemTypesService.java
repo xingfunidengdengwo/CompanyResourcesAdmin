@@ -58,7 +58,6 @@ public class ItemTypesService implements IItemTypesService {
         return result;
     }
 
-
     @Override
     public int addItemTypes(ItemTypes itemTypes) {
         List<ItemTypes> list = itemTypesDao.getItemTypesByName(itemTypes.getName());

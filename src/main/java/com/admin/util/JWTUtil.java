@@ -2,7 +2,7 @@
 <dependency>
 <groupId>com.auth0</groupId>
 <artifactId>java-jwt</artifactId>
-<version>3.10.3</version>
+<version>4.4.0</version>
 </dependency>*/
 
 package com.admin.util;
@@ -63,7 +63,7 @@ public class JWTUtil {
 		}
 	}
 
-	// 3. 解析token种的内容
+	// 3. 解析token中的内容
 	public static Map<String, Object> decodeJWT(String token) {
 		Map<String, Object> userInfo = JWT.decode(token).getClaim("userInfo").asMap();
 		return userInfo;
