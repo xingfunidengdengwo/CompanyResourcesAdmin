@@ -103,11 +103,13 @@ public class OperatorsController {
 
     @PostMapping("dologin")
     public CommonResult doLogin(@RequestBody Operators operators) {
+
         Map<String, Object> token = operatorsService.doLogin(operators);
 
         if (token == null) {
             return CommonResult.fail(403, "登录失败");
         } else {
+            //此处返回了一个包含了token以及用户数据的Map对象“token”
             return CommonResult.success(200, "登录成功", token);
         }
     }
@@ -124,11 +126,11 @@ public class OperatorsController {
 
     @PostMapping("operatorsimg/{id}")
     public CommonResult operatorsImg(@RequestParam("file") MultipartFile file, @PathVariable int id) {
-        System.out.println("file----" + id);
-        System.out.println(file);
+        System.out.println("接收到文件");
         //存储文件
         String newName = UploadFileUtil.uploadfile(file);
         //返回上传文件的地址 or 返回上传头像的员工数据
+        System.out.println("上传的头像被保存到了"+Config.STATIC_PATH + newName+",磁盘位置为"+Config.STATIC_DRI+newName);
         return CommonResult.success(Config.STATIC_PATH + newName);
     }
     //将文件地址存入数据库
