@@ -9,7 +9,7 @@ import java.util.List;
 
 @Mapper
 public interface IOperatorsDao {
-    int delOperators(int id) ;
+    int delOperators(int id);
 
     int addOperators(Operators operators);
 

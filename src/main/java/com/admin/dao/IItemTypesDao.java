@@ -9,7 +9,7 @@ import java.util.List;
 
 @Mapper
 public interface IItemTypesDao {
-    int delItemTypes(int id) ;
+    int delItemTypes(int id);
 
     int addItemTypes(ItemTypes itemTypes);
 

@@ -9,7 +9,9 @@
         from maintenance
                  LEFT JOIN items on maintenance.item_id = items.id
                  LEFT JOIN item_types on item_types.id = items.type_id
-        where items.is_del=0 and item_types.is_del=0 and maintenance.is_del=0
+        where items.is_del = 0
+          and item_types.is_del = 0
+          and maintenance.is_del = 0
         GROUP BY item_types.`name`
     </select>
 

@@ -33,7 +33,7 @@ public class ItemsService implements IItemsService {
     public int editItems(Items items) {
         int count = 0;
         if (getItemsByID(items.getId()).getName().equals(items.getName())) {
-           return itemsDao.editItems(items);
+            return itemsDao.editItems(items);
         } else {
             List<Items> list = itemsDao.getItemsByName(items.getName());
             if (list.size() == 0) {
@@ -58,7 +58,7 @@ public class ItemsService implements IItemsService {
         if (list.size() == 0) {
             itemsDao.addItems(items);
             return 1;
-        }else{
+        } else {
             return 0;
         }
     }

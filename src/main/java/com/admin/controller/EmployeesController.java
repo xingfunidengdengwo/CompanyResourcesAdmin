@@ -15,15 +15,16 @@ import java.util.List;
 public class EmployeesController {
     @Autowired
     IEmployeesService employeesService;
+
     //增加
     @PostMapping("employees")
     public CommonResult addEmployees(@RequestBody Employees employees) {
-        int result=employeesService.addEmployees(employees);
-        if(result==1){
-        employees = employeesService.getEmployeesByID(employees.getId());
-        return CommonResult.success(employees);
-        }else{
-            return  CommonResult.fail(400,"员工已存在");
+        int result = employeesService.addEmployees(employees);
+        if (result == 1) {
+            employees = employeesService.getEmployeesByID(employees.getId());
+            return CommonResult.success(employees);
+        } else {
+            return CommonResult.fail(400, "员工已存在");
         }
     }
 
@@ -43,11 +44,11 @@ public class EmployeesController {
     @PutMapping("employees")
     public CommonResult editEmployees(@RequestBody Employees employees) {
         int count = employeesService.editEmployees(employees);
-        if(count==1){
-        employees = employeesService.getEmployeesByID(employees.getId());
-        return CommonResult.success(employees);
-        }else{
-            return CommonResult.fail(400,"员工已存在");
+        if (count == 1) {
+            employees = employeesService.getEmployeesByID(employees.getId());
+            return CommonResult.success(employees);
+        } else {
+            return CommonResult.fail(400, "员工已存在");
         }
     }
 

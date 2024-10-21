@@ -1,9 +1,11 @@
 package com.admin.bean;
 
+import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
+@Data
 public class Maintenance {
     private Integer id;
     private Integer itemId;
@@ -26,51 +28,4 @@ public class Maintenance {
                 '}';
     }
 
-    public Items getItems() {
-        return items;
-    }
-
-    public void setItems(Items items) {
-        this.items = items;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getItemId() {
-        return itemId;
-    }
-
-    public void setItemId(Integer itemId) {
-        this.itemId = itemId;
-    }
-
-    public LocalDate getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(LocalDate startTime) {
-        this.startTime = startTime;
-    }
-
-    public LocalDate getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(LocalDate endTime) {
-        this.endTime = endTime;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }

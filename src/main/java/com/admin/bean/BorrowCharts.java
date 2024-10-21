@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class BorrowCharts {
-    private Integer count ;
-    private String typeName ;
+    private Integer count;
+    private String typeName;
 }

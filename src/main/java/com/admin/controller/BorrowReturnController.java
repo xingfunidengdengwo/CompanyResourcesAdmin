@@ -39,8 +39,8 @@ public class BorrowReturnController {
 
     //查询所有未归还的记录
     @GetMapping("unreturned")
-    public CommonResult getUnreturned(BorrowReturn borrowReturn,Page page) {
-            List<BorrowReturn> list = borrowReturnService.getUnreturned(borrowReturn, page);
+    public CommonResult getUnreturned(BorrowReturn borrowReturn, Page page) {
+        List<BorrowReturn> list = borrowReturnService.getUnreturned(borrowReturn, page);
         int count = borrowReturnService.getCountUnreturned(borrowReturn);
         HashMap map = new HashMap();
         map.put("list", list);

@@ -53,8 +53,8 @@ public class ItemTypesService implements IItemTypesService {
 
     @Override
     public int getItemsByItemTypeID(int id) {
-        int result= itemTypesDao.getItemsByItemTypeID(id);
-        System.out.println("当前分类物品数"+result);
+        int result = itemTypesDao.getItemsByItemTypeID(id);
+        System.out.println("当前分类物品数" + result);
         return result;
     }
 

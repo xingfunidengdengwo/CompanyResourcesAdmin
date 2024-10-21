@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class BorrowReturnService implements IBorrowReturnService {
@@ -19,6 +18,7 @@ public class BorrowReturnService implements IBorrowReturnService {
     IBorrowReturnDao borrowReturnDao;
     @Autowired
     IItemsDao itemsDao;
+
     @Override
     public BorrowReturn getBorrowReturnByID(int id) {
         return borrowReturnDao.getBorrowReturnByID(id);
@@ -26,7 +26,7 @@ public class BorrowReturnService implements IBorrowReturnService {
 
     @Override
     public List<BorrowReturn> getBorrowReturn(BorrowReturn borrowReturn, Page page) {
-        return borrowReturnDao.getBorrowReturn(borrowReturn,page);
+        return borrowReturnDao.getBorrowReturn(borrowReturn, page);
     }
 
     @Override
@@ -41,8 +41,8 @@ public class BorrowReturnService implements IBorrowReturnService {
         item.setId(borrowReturn.getItemId());
         item.setStatus("空闲");
         System.out.println(item);
-        int result=itemsDao.editItems(item);
-        int borrowReturnId=borrowReturnDao.getBorrowReturnIdByItemId(item.getId());
+        int result = itemsDao.editItems(item);
+        int borrowReturnId = borrowReturnDao.getBorrowReturnIdByItemId(item.getId());
         borrowReturn.setId(borrowReturnId);
         System.out.println(borrowReturn);
         return borrowReturnDao.editBorrowReturn(borrowReturn);
@@ -55,8 +55,8 @@ public class BorrowReturnService implements IBorrowReturnService {
     }
 
     @Override
-    public List<BorrowReturn> getUnreturned(BorrowReturn borrowReturn,Page page) {
-        return borrowReturnDao.getUnreturned(borrowReturn,page);
+    public List<BorrowReturn> getUnreturned(BorrowReturn borrowReturn, Page page) {
+        return borrowReturnDao.getUnreturned(borrowReturn, page);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class BorrowReturnService implements IBorrowReturnService {
         item.setId(borrowReturn.getItemId());
         item.setStatus("借出");
         System.out.println(item.getId());
-        int result=itemsDao.editItems(item);
+        int result = itemsDao.editItems(item);
         return borrowReturnDao.addBorrowReturn(borrowReturn);
     }
 }

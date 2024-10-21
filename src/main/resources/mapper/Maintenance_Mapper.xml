@@ -5,8 +5,8 @@
 <mapper namespace="com.admin.dao.IMaintenanceDao">
     <!--增加记录-->
     <insert id="addMaintenance" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
-        insert into maintenance(id,item_id,start_time,end_time,description)
-            value (#{id},#{itemId},#{startTime},#{endTime},#{description})
+        insert into maintenance(id, item_id, start_time, end_time, description)
+            value (#{id}, #{itemId}, #{startTime}, #{endTime}, #{description})
     </insert>
 
     <!--映射 将Java类中对应的属性映射到数据库对应的字段 属性名与字段名相同时可不写映射 主键一般用id表示 -->
@@ -20,7 +20,9 @@
     </resultMap>
 
     <select id="getItems" resultType="com.admin.bean.Items">
-        select * from items where id=#{itemId}
+        select *
+        from items
+        where id = #{itemId}
     </select>
 
     <!--where语句-->

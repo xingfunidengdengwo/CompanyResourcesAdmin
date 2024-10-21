@@ -9,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 @Component
 public class LoginInterceptor implements HandlerInterceptor {
     @Override
@@ -19,23 +20,23 @@ public class LoginInterceptor implements HandlerInterceptor {
 
         //验证每个请求是否是登陆状态
         //token在http的header中   叫Authorization
-       String tooken = request.getHeader("Authorization");
-       if(tooken != null && JWTUtil.verifyToken(tooken)) {
-           //有token token有效 有登陆状态
-           System.out.println("token有效，放行");
-           return true;
-       }else{
-           System.out.println("无token，或token无效，拦截");
-           //要回应的数据
-           CommonResult result=CommonResult.fail(400,"未登录");
+        String tooken = request.getHeader("Authorization");
+        if (tooken != null && JWTUtil.verifyToken(tooken)) {
+            //有token token有效 有登陆状态
+            System.out.println("token有效，放行");
+            return true;
+        } else {
+            System.out.println("无token，或token无效，拦截");
+            //要回应的数据
+            CommonResult result = CommonResult.fail(400, "未登录");
             //将数据解析成json
-           String json= JSON.toJSONString(result);
-           System.out.println(json);
-           //将数据回应
-           response.setCharacterEncoding("UTF-8");
-           response.getWriter().write(json);
-           return false;
-       }
+            String json = JSON.toJSONString(result);
+            System.out.println(json);
+            //将数据回应
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(json);
+            return false;
+        }
     }
 
     @Override

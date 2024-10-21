@@ -5,8 +5,8 @@
 <mapper namespace="com.admin.dao.IItemTypesDao">
     <!--增加记录-->
     <insert id="addItemTypes" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
-        insert into item_types(id,name)
-            value (#{id},#{name})
+        insert into item_types(id, name)
+            value (#{id}, #{name})
     </insert>
 
     <!--映射 将Java类中对应的属性映射到数据库对应的字段 属性名与字段名相同时可不写映射 主键一般用id表示 -->
@@ -64,7 +64,10 @@
 
     <!--获取分类下的物品数-->
     <select id="getItemsByItemTypeID" resultType="java.lang.Integer">
-        select count(*) from items where type_id=#{id} and is_del=0
+        select count(*)
+        from items
+        where type_id = #{id}
+          and is_del = 0
     </select>
 
     <!--修改记录-->

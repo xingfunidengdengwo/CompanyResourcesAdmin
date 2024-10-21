@@ -9,7 +9,7 @@ import java.util.List;
 
 @Mapper
 public interface IDepartmentsDao {
-    int delDepartments(int id) ;
+    int delDepartments(int id);
 
     int addDepartments(Departments departments);
 

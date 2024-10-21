@@ -18,6 +18,7 @@ public class MaintenanceService implements IMaintenanceService {
     IMaintenanceDao maintenanceDao;
     @Autowired
     IItemsDao itemsDao;
+
     @Override
     public Maintenance getMaintenanceByID(int id) {
         return maintenanceDao.getMaintenanceByID(id);
@@ -25,7 +26,7 @@ public class MaintenanceService implements IMaintenanceService {
 
     @Override
     public List<Maintenance> getMaintenance(Maintenance maintenance, Page page) {
-        return maintenanceDao.getMaintenance(maintenance,page);
+        return maintenanceDao.getMaintenance(maintenance, page);
     }
 
     @Override
@@ -40,8 +41,8 @@ public class MaintenanceService implements IMaintenanceService {
         item.setId(maintenance.getItemId());
         item.setStatus("空闲");
         System.out.println(item);
-        int result=itemsDao.editItems(item);
-        int maintenanceId=maintenanceDao.getMaintenanceIdByItemId(item.getId());
+        int result = itemsDao.editItems(item);
+        int maintenanceId = maintenanceDao.getMaintenanceIdByItemId(item.getId());
         maintenance.setId(maintenanceId);
         System.out.println(maintenance);
         return maintenanceDao.editMaintenance(maintenance);
@@ -61,7 +62,7 @@ public class MaintenanceService implements IMaintenanceService {
         item.setId(maintenance.getItemId());
         item.setStatus("维修");
         System.out.println(item);
-        int result=itemsDao.editItems(item);
+        int result = itemsDao.editItems(item);
         return maintenanceDao.addMaintenance(maintenance);
     }
 }

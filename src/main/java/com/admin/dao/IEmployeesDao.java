@@ -9,7 +9,7 @@ import java.util.List;
 
 @Mapper
 public interface IEmployeesDao {
-    int delEmployees(int id) ;
+    int delEmployees(int id);
 
     int addEmployees(Employees employees);
 
