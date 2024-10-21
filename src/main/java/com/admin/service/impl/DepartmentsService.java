@@ -21,7 +21,7 @@ public class DepartmentsService implements IDepartmentsService {
 
     @Override
     public List<Departments> getDepartments(Departments departments, Page page) {
-        return departmentsDao.getDepartments(departments,page);
+        return departmentsDao.getDepartments(departments, page);
     }
 
     @Override
@@ -31,17 +31,18 @@ public class DepartmentsService implements IDepartmentsService {
 
     @Override
     public int editDepartments(Departments departments) {
-        if(getDepartmentsByID(departments.getId()).getName().equals(departments.getName())) {
+        if (getDepartmentsByID(departments.getId()).getName().equals(departments.getName())) {
             return departmentsDao.editDepartments(departments);
-        }else{
-        List<Departments> list=departmentsDao.getDepartmentsByName(departments.getName());
-        if(list.size()==0){
-            int count=0;
-            count = departmentsDao.editDepartments(departments);
-            return count;
-        }else {
-            return 0;
-        }}
+        } else {
+            List<Departments> list = departmentsDao.getDepartmentsByName(departments.getName());
+            if (list.size() == 0) {
+                int count = 0;
+                count = departmentsDao.editDepartments(departments);
+                return count;
+            } else {
+                return 0;
+            }
+        }
     }
 
     @Override
@@ -52,20 +53,20 @@ public class DepartmentsService implements IDepartmentsService {
 
     @Override
     public int getEmployeesByDepartmentId(int id) {
-       int result= departmentsDao.getEmployeesByDepartmentId(id);
-        System.out.println("当前部门人数"+result);
-       return result;
+        int result = departmentsDao.getEmployeesByDepartmentId(id);
+        System.out.println("当前部门人数" + result);
+        return result;
     }
 
 
     @Override
     public int addDepartments(Departments departments) {
-        List<Departments> list=departmentsDao.getDepartmentsByName(departments.getName());
+        List<Departments> list = departmentsDao.getDepartmentsByName(departments.getName());
         System.out.println(list);
-        if(list.size()==0){
+        if (list.size() == 0) {
             departmentsDao.addDepartments(departments);
             return 1;
-        }else {
+        } else {
             return 0;
         }
     }

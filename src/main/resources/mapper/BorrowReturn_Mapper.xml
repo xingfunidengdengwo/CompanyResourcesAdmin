@@ -6,8 +6,9 @@
 
     <!--增加记录-->
     <insert id="addBorrowReturn" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
-        insert into borrow_return(item_id, operator_id, employee_id, borrow_time, expected_return_time,actual_return_time)
-            value (#{itemId}, #{operatorId}, #{employeeId}, #{borrowTime}, #{expectedReturnTime},#{actualReturnTime})
+        insert into borrow_return(item_id, operator_id, employee_id, borrow_time, expected_return_time,
+                                  actual_return_time)
+            value (#{itemId}, #{operatorId}, #{employeeId}, #{borrowTime}, #{expectedReturnTime}, #{actualReturnTime})
 #         在添加和修改借还记录时，前端页面operatorId应该是不可编辑的，且添加时默认值是当前登录系统的operator！！！
     </insert>
 
@@ -21,19 +22,30 @@
         <result property="expectedReturnTime" column="expected_return_time"/>
         <result property="actualReturnTime" column="actual_return_time"/>
         <association column="item_id" javaType="com.admin.bean.Items" select="getItems" property="items"/>
-        <association column="operator_id" javaType="com.admin.bean.Operators" select="getOperators" property="operators"/>
-        <association column="employee_id" javaType="com.admin.bean.Employees" select="getEmployees" property="employees"/>
+        <association column="operator_id" javaType="com.admin.bean.Operators" select="getOperators"
+                     property="operators"/>
+        <association column="employee_id" javaType="com.admin.bean.Employees" select="getEmployees"
+                     property="employees"/>
 
     </resultMap>
 
     <select id="getItems" resultType="com.admin.bean.Items">
-        select * from items where id=#{itemId} and is_del=0
+        select *
+        from items
+        where id = #{itemId}
+          and is_del = 0
     </select>
     <select id="getOperators" resultType="com.admin.bean.Operators">
-        select * from operators where id=#{operatorId} and is_del=0
+        select *
+        from operators
+        where id = #{operatorId}
+          and is_del = 0
     </select>
     <select id="getEmployees" resultType="com.admin.bean.Employees">
-        select * from employees where id=#{employeeId} and is_del=0
+        select *
+        from employees
+        where id = #{employeeId}
+          and is_del = 0
     </select>
 
 

@@ -5,8 +5,8 @@
 <mapper namespace="com.admin.dao.IEmployeesDao">
     <!--增加记录-->
     <insert id="addEmployees" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
-        insert into employees(id,name,department_id)
-            value (#{id},#{name},#{departmentId})
+        insert into employees(id, name, department_id)
+            value (#{id}, #{name}, #{departmentId})
     </insert>
 
     <!--映射 将Java类中对应的属性映射到数据库对应的字段 属性名与字段名相同时可不写映射 主键一般用id表示 -->
@@ -14,11 +14,14 @@
         <id property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="departmentId" column="department_id"/>
-        <association column="department_id" javaType="com.admin.bean.Departments" select="getDepartments" property="departments"/>
+        <association column="department_id" javaType="com.admin.bean.Departments" select="getDepartments"
+                     property="departments"/>
     </resultMap>
 
     <select id="getDepartments" resultType="com.admin.bean.Departments">
-        select * from departments where id=#{departmentId}
+        select *
+        from departments
+        where id = #{departmentId}
     </select>
 
     <!--where语句-->
@@ -65,7 +68,10 @@
     </select>
 
     <select id="getEmployeesByName" resultMap="employeesResultMap">
-        select * from employees where name=#{name} and is_del=0
+        select *
+        from employees
+        where name = #{name}
+          and is_del = 0
     </select>
 
     <!--修改记录-->

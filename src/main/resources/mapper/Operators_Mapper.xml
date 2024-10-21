@@ -5,8 +5,8 @@
 <mapper namespace="com.admin.dao.IOperatorsDao">
     <!--增加记录-->
     <insert id="addOperators" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
-        insert into operators(id,image,name,password,email)
-            value (#{id},#{img},#{name},#{password},#{email})
+        insert into operators(id, image, name, password, email)
+            value (#{id}, #{img}, #{name}, #{password}, #{email})
     </insert>
 
     <!--映射 将Java类中对应的属性映射到数据库对应的字段 属性名与字段名相同时可不写映射 主键一般用id表示 -->
@@ -48,13 +48,17 @@
     </select>
 
     <select id="getOperatorsByName" resultMap="operatorsResultMap">
-        select id,image,name,password,email,is_del from operators where
-            name =#{name} and is_del=0
+        select id, image, name, password, email, is_del
+        from operators
+        where name = #{name}
+          and is_del = 0
     </select>
 
     <select id="getOperatorsByEmail" resultMap="operatorsResultMap">
-        select id,image,name,password,email,is_del from operators where
-            email =#{email} and is_del=0
+        select id, image, name, password, email, is_del
+        from operators
+        where email = #{email}
+          and is_del = 0
     </select>
 
     <!--查询所有记录-->
@@ -100,9 +104,9 @@
     <update id="updatePassword">
         update operators
         <set>
-        <if test='newPassword!=null and newPassword!=""'>
-            password=#{newPassword} where name=#{name}
-        </if>
+            <if test='newPassword!=null and newPassword!=""'>
+                password=#{newPassword} where name=#{name}
+            </if>
         </set>
     </update>
 

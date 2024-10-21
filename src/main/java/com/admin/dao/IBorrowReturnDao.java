@@ -9,7 +9,7 @@ import java.util.List;
 
 @Mapper
 public interface IBorrowReturnDao {
-    int delBorrowReturn(int id) ;
+    int delBorrowReturn(int id);
 
     int addBorrowReturn(BorrowReturn borrowReturn);
 
@@ -21,9 +21,9 @@ public interface IBorrowReturnDao {
 
     int editBorrowReturn(BorrowReturn borrowReturn);
 
-    List<BorrowReturn> getUnreturned(@Param("borrowReturn")BorrowReturn borrowReturn,@Param("page") Page page);
+    List<BorrowReturn> getUnreturned(@Param("borrowReturn") BorrowReturn borrowReturn, @Param("page") Page page);
 
-    int getCountUnreturned(@Param("borrowReturn")BorrowReturn borrowReturn);
+    int getCountUnreturned(@Param("borrowReturn") BorrowReturn borrowReturn);
 
     int getBorrowReturnIdByItemId(Integer id);
 }

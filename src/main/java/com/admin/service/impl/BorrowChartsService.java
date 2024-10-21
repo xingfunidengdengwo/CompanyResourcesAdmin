@@ -7,10 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 public class BorrowChartsService implements IBorrowChartsService {
     @Autowired
     IBorrowChartsDao borrowChartsDao;
+
     @Override
     public List<BorrowCharts> getBorrowCharts(BorrowCharts borrowCharts) {
 

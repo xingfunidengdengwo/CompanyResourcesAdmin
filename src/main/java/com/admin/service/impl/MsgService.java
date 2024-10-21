@@ -4,7 +4,6 @@ import com.admin.bean.Email;
 import com.admin.service.IMsgService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -17,7 +16,7 @@ import javax.mail.internet.MimeMessage;
 @Slf4j
 public class MsgService implements IMsgService {
 
-    private  final JavaMailSender javaMailSender;
+    private final JavaMailSender javaMailSender;
     private final Email email;
 
     @Override
@@ -33,7 +32,7 @@ public class MsgService implements IMsgService {
             helper.setSubject(email.getSubject());
 
             String content = email.getContextPrefix() + msg + email.getContextSuffix();
-            helper.setText(content,true);
+            helper.setText(content, true);
 
             javaMailSender.send(message);
         } catch (MessagingException e) {

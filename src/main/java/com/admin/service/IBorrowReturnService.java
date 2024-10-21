@@ -19,7 +19,7 @@ public interface IBorrowReturnService {
 
     int delBorrowReturn(int id);
 
-    List<BorrowReturn> getUnreturned(BorrowReturn borrowReturn,Page page);
+    List<BorrowReturn> getUnreturned(BorrowReturn borrowReturn, Page page);
 
     int getCountUnreturned(BorrowReturn borrowReturn);
 }

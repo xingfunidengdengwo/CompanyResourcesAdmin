@@ -16,6 +16,7 @@ public class MaintenanceController {
 
     @Autowired
     IMaintenanceService maintenanceService;
+
     //增加
     @PostMapping("maintenance")
     public CommonResult addMaintenance(@RequestBody Maintenance maintenance) {

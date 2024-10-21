@@ -5,8 +5,8 @@
 <mapper namespace="com.admin.dao.IItemsDao">
     <!--增加记录-->
     <insert id="addItems" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
-        insert into items(id,code,name,type_id,status)
-            value (#{id},#{code},#{name},#{typeId},#{status})
+        insert into items(id, code, name, type_id, status)
+            value (#{id}, #{code}, #{name}, #{typeId}, #{status})
     </insert>
 
     <!--映射 将Java类中对应的属性映射到数据库对应的字段 属性名与字段名相同时可不写映射 主键一般用id表示 -->
@@ -20,7 +20,9 @@
     </resultMap>
 
     <select id="getItemTypes" resultType="com.admin.bean.ItemTypes">
-        select * from item_types where id=#{typeId}
+        select *
+        from item_types
+        where id = #{typeId}
     </select>
 
     <!--where语句-->

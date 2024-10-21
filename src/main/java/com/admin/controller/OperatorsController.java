@@ -57,10 +57,10 @@ public class OperatorsController {
         Object obj2 = operatorsService.getOperatorsByEmail(operators.getEmail());
         if (obj1 != null) {
             return CommonResult.fail(400, "用户已存在");
-        }if(obj2 != null) {
-            return CommonResult.fail(401,"邮箱已存在");
         }
-        else {
+        if (obj2 != null) {
+            return CommonResult.fail(401, "邮箱已存在");
+        } else {
             email.setTo(operators.getEmail());
             msgService.sendMsg(Vcode);
             return CommonResult.success();
@@ -130,9 +130,10 @@ public class OperatorsController {
         //存储文件
         String newName = UploadFileUtil.uploadfile(file);
         //返回上传文件的地址 or 返回上传头像的员工数据
-        System.out.println("上传的头像被保存到了"+Config.STATIC_PATH + newName+",磁盘位置为"+Config.STATIC_DRI+newName);
+        System.out.println("上传的头像被保存到了" + Config.STATIC_PATH + newName + ",磁盘位置为" + Config.STATIC_DRI + newName);
         return CommonResult.success(Config.STATIC_PATH + newName);
     }
+
     //将文件地址存入数据库
     @PutMapping("operatorsimg")
     public CommonResult operatorsimg(Operators operators) {

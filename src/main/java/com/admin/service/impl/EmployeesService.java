@@ -13,6 +13,7 @@ import java.util.List;
 public class EmployeesService implements IEmployeesService {
     @Autowired
     IEmployeesDao employeesDao;
+
     @Override
     public Employees getEmployeesByID(int id) {
         return employeesDao.getEmployeesByID(id);
@@ -20,7 +21,7 @@ public class EmployeesService implements IEmployeesService {
 
     @Override
     public List<Employees> getEmployees(Employees employees, Page page) {
-        return employeesDao.getEmployees(employees,page);
+        return employeesDao.getEmployees(employees, page);
     }
 
     @Override
@@ -30,17 +31,17 @@ public class EmployeesService implements IEmployeesService {
 
     @Override
     public int editEmployees(Employees employees) {
-        if(getEmployeesByID(employees.getId()).getName().equals(employees.getName()) ) {
+        if (getEmployeesByID(employees.getId()).getName().equals(employees.getName())) {
             return employeesDao.editEmployees(employees);
-        }else {
-        List<Employees> list=employeesDao.getEmployeesByName(employees.getName());
-        if(list.size()==0){
-            int count=0;
-        count = employeesDao.editEmployees(employees);
-        return count;
-        }else {
-            return 0;
-        }
+        } else {
+            List<Employees> list = employeesDao.getEmployeesByName(employees.getName());
+            if (list.size() == 0) {
+                int count = 0;
+                count = employeesDao.editEmployees(employees);
+                return count;
+            } else {
+                return 0;
+            }
         }
     }
 
@@ -51,15 +52,13 @@ public class EmployeesService implements IEmployeesService {
     }
 
 
-
     @Override
     public int addEmployees(Employees employees) {
-        List<Employees> list=employeesDao.getEmployeesByName(employees.getName());
-        if (list.size()==0) {
-         employeesDao.addEmployees(employees);
+        List<Employees> list = employeesDao.getEmployeesByName(employees.getName());
+        if (list.size() == 0) {
+            employeesDao.addEmployees(employees);
             return 1;
-        }
-        else {
+        } else {
             return 0;
         }
     }

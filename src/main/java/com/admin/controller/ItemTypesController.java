@@ -15,15 +15,16 @@ import java.util.List;
 public class ItemTypesController {
     @Autowired
     IItemTypesService itemTypesService;
+
     //增加
     @PostMapping("itemtypes")
     public CommonResult addItemTypes(@RequestBody ItemTypes itemTypes) {
-        int result=itemTypesService.addItemTypes(itemTypes);
-        if(result==1){
-        itemTypes = itemTypesService.getItemTypesByID(itemTypes.getId());
-        return CommonResult.success(itemTypes);
-        }else{
-            return  CommonResult.fail(400,"分类已存在");
+        int result = itemTypesService.addItemTypes(itemTypes);
+        if (result == 1) {
+            itemTypes = itemTypesService.getItemTypesByID(itemTypes.getId());
+            return CommonResult.success(itemTypes);
+        } else {
+            return CommonResult.fail(400, "分类已存在");
         }
     }
 
@@ -43,26 +44,26 @@ public class ItemTypesController {
     @PutMapping("itemtypes")
     public CommonResult editItemTypes(@RequestBody ItemTypes itemTypes) {
         int count = itemTypesService.editItemTypes(itemTypes);
-        if(count==1){
-        itemTypes = itemTypesService.getItemTypesByID(itemTypes.getId());
-        return CommonResult.success(itemTypes);
-        }else{
-            return  CommonResult.fail(400,"分类已存在");
+        if (count == 1) {
+            itemTypes = itemTypesService.getItemTypesByID(itemTypes.getId());
+            return CommonResult.success(itemTypes);
+        } else {
+            return CommonResult.fail(400, "分类已存在");
         }
     }
 
     //删除
     @DeleteMapping("itemtypes/{id}")
     public CommonResult delItemTypes(@PathVariable int id) {
-        int result=itemTypesService.getItemsByItemTypeID(id);
-        if(result==0){
-        int count = itemTypesService.delItemTypes(id);
-        if (count > 0) {
-            return CommonResult.success();
-        } else {
-            return CommonResult.fail();
+        int result = itemTypesService.getItemsByItemTypeID(id);
+        if (result == 0) {
+            int count = itemTypesService.delItemTypes(id);
+            if (count > 0) {
+                return CommonResult.success();
+            } else {
+                return CommonResult.fail();
+            }
         }
-    }
         return CommonResult.fail(400, "分类下有物品不能删除");
     }
 }
