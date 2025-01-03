@@ -41,7 +41,7 @@ public class OperatorsService implements IOperatorsService {
                 return operatorsDao.editOperators(operators);
             } else {
                 List<Operators> list = operatorsDao.getOperatorsByName(operators.getName());
-                if (list.size() == 0) {
+                if (list.isEmpty()) {
                     count = operatorsDao.editOperators(operators);
                     return count;
                 } else {
