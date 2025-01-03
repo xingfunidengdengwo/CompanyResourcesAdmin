@@ -3,6 +3,13 @@ spring:
     host: smtp.qq.com
     username: 2152288649@qq.com
     password: ***REMOVED***
+    properties:
+      mail:
+        smtp:
+          auth: true
+          ssl:
+            enable: true
+            required: true
 
   datasource:
     username: root
