@@ -72,7 +72,7 @@ public class OperatorsController {
     public CommonResult getOperators(Operators operators, Page page) {
         List<Operators> list = operatorsService.getOperators(operators, page);
         int count = operatorsService.getCount(operators);
-        HashMap map = new HashMap();
+        HashMap<String,Object> map = new HashMap<>();
         map.put("list", list);
         map.put("count", count);
         return CommonResult.success(map);
