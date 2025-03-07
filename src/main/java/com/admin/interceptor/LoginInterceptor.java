@@ -20,8 +20,8 @@ public class LoginInterceptor implements HandlerInterceptor {
 
         //验证每个请求是否是登陆状态
         //token在http的header中   叫Authorization
-        String tooken = request.getHeader("Authorization");
-        if (tooken != null && JWTUtil.verifyToken(tooken)) {
+        String token = request.getHeader("Authorization");
+        if (token != null && JWTUtil.verifyToken(token)) {
             //有token token有效 有登陆状态
             System.out.println("token有效，放行");
             return true;
