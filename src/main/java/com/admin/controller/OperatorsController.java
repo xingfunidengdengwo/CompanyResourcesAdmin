@@ -142,7 +142,7 @@ public class OperatorsController {
 
     //将文件地址存入数据库
     @PutMapping("operatorsimg")
-    public CommonResult operatorsimg(Operators operators) {
+    public CommonResult operatorsImg(Operators operators) {
         System.out.println(operators.getId());
         System.out.println(operators.getImg());
 
@@ -151,8 +151,8 @@ public class OperatorsController {
     }
 
     //验证输入的邮箱验证码是否正确并修改密码
-    @PutMapping("validatecode")
-    public CommonResult validatecode(@RequestBody Operators operators) {
+    @PutMapping("updatepassword")
+    public CommonResult updatePassword(@RequestBody Operators operators) {
         System.out.println(operators.getEmailVcode().equals(Vcode));
         if (operators.getEmailVcode().equals(Vcode)) {
             operatorsService.updatePassword(operators);
