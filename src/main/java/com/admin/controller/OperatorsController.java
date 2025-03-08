@@ -67,7 +67,7 @@ public class OperatorsController {
             try {
                 msgService.sendMsg(Vcode);
             } catch (MessagingException | MailSendException e) {
-                return CommonResult.fail(400, "发送失败,请检查邮箱地址是否正确");
+                return CommonResult.fail(400, "发送失败:"+e.getMessage()+",请检查邮箱地址是否正确");
             }
             return CommonResult.success();
         }
@@ -171,7 +171,7 @@ public class OperatorsController {
             try {
                 msgService.sendMsg(Vcode);
             } catch (MessagingException | MailSendException e) {
-                return CommonResult.fail(400, "发送失败,请检查邮箱地址是否正确");
+                return CommonResult.fail(400, "发送失败:"+e.getMessage()+",请检查邮箱地址是否正确");
             }
             return CommonResult.success();
         } else {
