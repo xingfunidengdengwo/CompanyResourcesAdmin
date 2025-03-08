@@ -4,15 +4,17 @@ import com.admin.bean.Email;
 import com.admin.bean.Operators;
 import com.admin.common.CommonResult;
 import com.admin.config.Config;
+import com.admin.service.IMsgService;
 import com.admin.service.IOperatorsService;
-import com.admin.service.impl.MsgService;
 import com.admin.util.JWTUtil;
 import com.admin.util.Page;
 import com.admin.util.UploadFileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailSendException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +33,7 @@ public class OperatorsController {
     @Autowired
     private Email email;
     @Autowired
-    private MsgService msgService;
+    private IMsgService msgService;
 
     //验证输入的邮箱验证码是否正确并添加用户
     @PostMapping("operators")
@@ -62,7 +64,11 @@ public class OperatorsController {
             return CommonResult.fail(401, "邮箱已存在");
         } else {
             email.setTo(operators.getEmail());
-            msgService.sendMsg(Vcode);
+            try {
+                msgService.sendMsg(Vcode);
+            } catch (MessagingException | MailSendException e) {
+                return CommonResult.fail(400, "发送失败,请检查邮箱地址是否正确");
+            }
             return CommonResult.success();
         }
     }
@@ -72,7 +78,7 @@ public class OperatorsController {
     public CommonResult getOperators(Operators operators, Page page) {
         List<Operators> list = operatorsService.getOperators(operators, page);
         int count = operatorsService.getCount(operators);
-        HashMap<String,Object> map = new HashMap<>();
+        HashMap<String, Object> map = new HashMap<>();
         map.put("list", list);
         map.put("count", count);
         return CommonResult.success(map);
@@ -160,12 +166,16 @@ public class OperatorsController {
     @PostMapping("sendmsg")
     public CommonResult sendMsg(@RequestBody Operators operators) {
         operators = operatorsService.getOperatorsByName(operators.getName());
-        if (operators != null) {
+        if (operators.getEmail() != null) {
             email.setTo(operators.getEmail());
-            msgService.sendMsg(Vcode);
+            try {
+                msgService.sendMsg(Vcode);
+            } catch (MessagingException | MailSendException e) {
+                return CommonResult.fail(400, "发送失败,请检查邮箱地址是否正确");
+            }
             return CommonResult.success();
         } else {
-            return CommonResult.fail(400, "用户不存在");
+            return CommonResult.fail(400, "用户不存在,或未设置邮箱");
         }
     }
 }

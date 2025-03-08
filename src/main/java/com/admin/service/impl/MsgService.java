@@ -3,7 +3,7 @@ package com.admin.service.impl;
 import com.admin.bean.Email;
 import com.admin.service.IMsgService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -13,32 +13,29 @@ import javax.mail.internet.MimeMessage;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class MsgService implements IMsgService {
 
     private final JavaMailSender javaMailSender;
     private final Email email;
 
     @Override
-    public void sendMsg(String msg) {
+    public void sendMsg(String msg) throws MessagingException, MailSendException {
+
         MimeMessage message = javaMailSender.createMimeMessage();
+
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
-        try {
-            helper.setFrom(email.getFrom() + "(" + email.getName() + ")");
+        helper.setFrom(email.getFrom() + "(" + email.getName() + ")");
 
-            helper.setTo(email.getTo());
+        helper.setTo(email.getTo());
 
-            helper.setSubject(email.getSubject());
+        helper.setSubject(email.getSubject());
 
-            String content = email.getContextPrefix() + msg + email.getContextSuffix();
-            helper.setText(content, true);
+        String content = email.getContextPrefix() + msg + email.getContextSuffix();
 
-            javaMailSender.send(message);
-        } catch (MessagingException e) {
-            throw new RuntimeException("邮件发送失败... ...");
-        }
+        helper.setText(content, true);
 
-        log.info("发送成功!");
+        javaMailSender.send(message);
+
     }
 }
