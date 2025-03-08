@@ -6,7 +6,7 @@
     <!--增加记录-->
     <insert id="addOperators" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
         insert into operators(id, image, name, password, email)
-            value (#{id}, #{img}, #{name}, #{password}, #{email})
+        value (#{id}, #{img}, #{name}, #{password}, #{email})
     </insert>
 
     <!--映射 将Java类中对应的属性映射到数据库对应的字段 属性名与字段名相同时可不写映射 主键一般用id表示 -->
@@ -16,7 +16,6 @@
         <result property="name" column="name"/>
         <result property="password" column="password"/>
         <result property="email" column="email"/>
-
     </resultMap>
 
     <!--where语句-->
@@ -25,14 +24,14 @@
         <!-- 根据参数不同组合出不同的SQL语句  动态SQL语句 标签-->
         <where>
             <!-- 编写条件语句   如果where标签中有内容  会自动添加where关键字 -->
-            <if test="operators.name!= null and operators.name!= ''">
+            <if test="operators.name != null and operators.name != ''">
                 <!-- 重新定义参数内容 -->
-                <bind value="'%'+operators.name+'%'" name="nameText"/>
+                <bind value="'%' + operators.name + '%'" name="nameText"/>
                 and name like #{nameText}
             </if>
-            <if test="operators.email!= null and operators.email!= ''">
+            <if test="operators.email != null and operators.email != ''">
                 <!-- 重新定义参数内容 -->
-                <bind value="'%'+operators.email+'%'" name="emailText"/>
+                <bind value="'%' + operators.email + '%'" name="emailText"/>
                 and email like #{emailText}
             </if>
             and is_del = 0
@@ -44,21 +43,21 @@
         select *
         from operators
         where id = #{id}
-          and is_del = 0
+        and is_del = 0
     </select>
 
     <select id="getOperatorsByName" resultMap="operatorsResultMap">
         select id, image, name, password, email, is_del
         from operators
         where name = #{name}
-          and is_del = 0
+        and is_del = 0
     </select>
 
     <select id="getOperatorsByEmail" resultMap="operatorsResultMap">
         select id, image, name, password, email, is_del
         from operators
         where email = #{email}
-          and is_del = 0
+        and is_del = 0
     </select>
 
     <!--查询所有记录-->
@@ -67,7 +66,7 @@
 
         <include refid="getOperatorsWhere"/>
 
-        <if test="page.page>=0 and page.size>0">
+        <if test="page.page >= 0 and page.size > 0">
             limit #{page.start},#{page.size}
         </if>
     </select>
@@ -83,16 +82,16 @@
     <update id="editOperators">
         update operators
         <set>
-            <if test='name!=null and name!=""'>
+            <if test='name != null and name != ""'>
                 name=#{name},
             </if>
-            <if test='newPassword!= null and newPassword!=""'>
+            <if test='newPassword != null and newPassword != ""'>
                 password = #{newPassword},
             </if>
-            <if test='email!=null and email!=""'>
+            <if test='email != null and email != ""'>
                 email=#{email},
             </if>
-            <if test='img!=null and img!=""'>
+            <if test='img != null and img != ""'>
                 image=#{img},
             </if>
         </set>
@@ -104,7 +103,7 @@
     <update id="updatePassword">
         update operators
         <set>
-            <if test='newPassword!=null and newPassword!=""'>
+            <if test='newPassword != null and newPassword != ""'>
                 password=#{newPassword} where name=#{name}
             </if>
         </set>
@@ -115,5 +114,4 @@
         <!-- delete from table where id=#{id} -->
         update operators set is_del =1 where id=#{id}
     </delete>
-
 </mapper>

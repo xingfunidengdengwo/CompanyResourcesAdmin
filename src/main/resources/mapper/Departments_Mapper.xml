@@ -6,7 +6,7 @@
     <!--增加记录-->
     <insert id="addDepartments" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
         insert into departments(id, name)
-            value (#{id}, #{name})
+        value (#{id}, #{name})
     </insert>
 
     <!--映射 将Java类中对应的属性映射到数据库对应的字段 属性名与字段名相同时可不写映射 主键一般用id表示 -->
@@ -21,9 +21,9 @@
         <!-- 根据参数不同组合出不同的SQL语句  动态SQL语句 标签-->
         <where>
             <!-- 编写条件语句   如果where标签中有内容  会自动添加where关键字 -->
-            <if test="departments.name!= null and departments.name!= ''">
+            <if test="departments.name != null and departments.name != ''">
                 <!-- 重新定义参数内容 -->
-                <bind value="'%'+departments.name+'%'" name="nameText"/>
+                <bind value="'%' + departments.name + '%'" name="nameText"/>
                 and name like #{nameText}
             </if>
             and is_del = 0
@@ -35,7 +35,7 @@
         select *
         from departments
         where id = #{id}
-          and is_del = 0
+        and is_del = 0
     </select>
 
     <!--查询所有记录-->
@@ -44,7 +44,7 @@
 
         <include refid="getDepartmentsWhere"/>
 
-        <if test="page.page>=0 and page.size>0">
+        <if test="page.page >= 0 and page.size > 0">
             limit #{page.start},#{page.size}
         </if>
     </select>
@@ -53,14 +53,14 @@
         select count(*)
         from employees
         where department_id = #{id}
-          and is_del = 0
+        and is_del = 0
     </select>
 
     <select id="getDepartmentsByName" resultMap="departmentsResultMap">
         select *
         from departments
         where name = #{name}
-          and is_del = 0
+        and is_del = 0
     </select>
 
     <!--分页计算行数-->
@@ -74,7 +74,7 @@
     <update id="editDepartments">
         update departments
         <set>
-            <if test='name!=null and name!=""'>
+            <if test='name != null and name != ""'>
                 name=#{name},
             </if>
         </set>
@@ -89,5 +89,4 @@
         update departments set is_del =1 where id=#{id}
     </delete>
     <!--删除部门和物品分类时需要在实现类中判断所属部门或分类内是否有员工或物品，如果有不能删除-->
-
 </mapper>

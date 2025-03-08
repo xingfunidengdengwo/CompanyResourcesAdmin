@@ -3,7 +3,6 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.admin.dao.IBorrowChartsDao">
-
     <select id="getBorrowCharts" resultMap="borrowChartsResultMap">
         select COUNT(item_types.`name`) as `count`, item_types.`name` as `typeName`
         from borrow_return
@@ -19,5 +18,4 @@
         <id property="count" column="count"/>
         <id property="typeName" column="typeName"/>
     </resultMap>
-
 </mapper>

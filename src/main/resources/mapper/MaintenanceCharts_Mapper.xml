@@ -3,7 +3,6 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.admin.dao.IMaintenanceChartsDao">
-
     <select id="getMaintenanceCharts" resultMap="maintenanceChartsResultMap">
         select COUNT(item_types.`name`) as value, item_types.`name` as name
         from maintenance
@@ -19,5 +18,4 @@
         <id property="value" column="value"/>
         <id property="name" column="name"/>
     </resultMap>
-
 </mapper>

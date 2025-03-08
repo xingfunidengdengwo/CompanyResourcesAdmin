@@ -6,7 +6,7 @@
     <!--增加记录-->
     <insert id="addMaintenance" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
         insert into maintenance(id, item_id, start_time, end_time, description)
-            value (#{id}, #{itemId}, #{startTime}, #{endTime}, #{description})
+        value (#{id}, #{itemId}, #{startTime}, #{endTime}, #{description})
     </insert>
 
     <!--映射 将Java类中对应的属性映射到数据库对应的字段 属性名与字段名相同时可不写映射 主键一般用id表示 -->
@@ -31,18 +31,18 @@
         <!-- 根据参数不同组合出不同的SQL语句  动态SQL语句 标签-->
         <where>
             <!-- 编写条件语句   如果where标签中有内容  会自动添加where关键字 -->
-            <if test="maintenance.description!= null and maintenance.description!= ''">
+            <if test="maintenance.description != null and maintenance.description != ''">
                 <!-- 重新定义参数内容 -->
-                <bind value="'%'+maintenance.description+'%'" name="descriptionText"/>
+                <bind value="'%' + maintenance.description + '%'" name="descriptionText"/>
                 and description like #{descriptionText}
             </if>
-            <if test="maintenance.itemId!= null">
+            <if test="maintenance.itemId != null">
                 and item_id = #{maintenance.itemId}
             </if>
-            <if test="maintenance.startTime!= null">
+            <if test="maintenance.startTime != null">
                 and start_time = #{maintenance.startTime}
             </if>
-            <if test="maintenance.endTime!= null">
+            <if test="maintenance.endTime != null">
                 and end_time = #{maintenance.endTime}
             </if>
             and is_del = 0
@@ -54,7 +54,7 @@
         select *
         from maintenance
         where id = #{id}
-          and is_del = 0
+        and is_del = 0
     </select>
 
     <!--根据物品id找维修id-->
@@ -62,8 +62,8 @@
         select id
         from maintenance
         where item_id = #{id}
-          and is_del = 0
-          and end_time is null
+        and is_del = 0
+        and end_time is null
     </select>
 
     <!--查询所有记录-->
@@ -72,7 +72,7 @@
 
         <include refid="getMaintenanceWhere"/>
 
-        <if test="page.page>=0 and page.size>0">
+        <if test="page.page >= 0 and page.size > 0">
             limit #{page.start},#{page.size}
         </if>
     </select>
@@ -88,16 +88,16 @@
     <update id="editMaintenance">
         update maintenance
         <set>
-            <if test='itemId!=null and itemId!=""'>
+            <if test='itemId != null and itemId != ""'>
                 item_id=#{itemId},
             </if>
-            <if test="startTime!= null">
+            <if test="startTime != null">
                 start_time = #{startTime},
             </if>
-            <if test="endTime!= null">
+            <if test="endTime != null">
                 end_time = #{endTime},
             </if>
-            <if test='description!=null and description !=""'>
+            <if test='description != null and description != ""'>
                 description=#{description},
             </if>
         </set>
@@ -111,5 +111,4 @@
         <!-- delete from table where id=#{id} -->
         update maintenance set is_del =1 where id=#{id}
     </delete>
-
 </mapper>

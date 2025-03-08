@@ -6,7 +6,7 @@
     <!--增加记录-->
     <insert id="addItems" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
         insert into items(id, code, name, type_id, status)
-            value (#{id}, #{code}, #{name}, #{typeId}, #{status})
+        value (#{id}, #{code}, #{name}, #{typeId}, #{status})
     </insert>
 
     <!--映射 将Java类中对应的属性映射到数据库对应的字段 属性名与字段名相同时可不写映射 主键一般用id表示 -->
@@ -31,20 +31,20 @@
         <!-- 根据参数不同组合出不同的SQL语句  动态SQL语句 标签-->
         <where>
             <!-- 编写条件语句   如果where标签中有内容  会自动添加where关键字 -->
-            <if test="items.name!= null and items.name!= ''">
+            <if test="items.name != null and items.name != ''">
                 <!-- 重新定义参数内容 -->
-                <bind value="'%'+items.name+'%'" name="nameText"/>
+                <bind value="'%' + items.name + '%'" name="nameText"/>
                 and name like #{nameText}
             </if>
-            <if test="items.status!= null and items.status!= ''">
+            <if test="items.status != null and items.status != ''">
                 <!-- 重新定义参数内容 -->
-                <bind value="'%'+items.status+'%'" name="statusText"/>
+                <bind value="'%' + items.status + '%'" name="statusText"/>
                 and status like #{statusText}
             </if>
-            <if test="items.typeId!= null">
+            <if test="items.typeId != null">
                 and type_id = #{items.typeId}
             </if>
-            <if test="items.code!= null">
+            <if test="items.code != null">
                 and code = #{items.code}
             </if>
             and is_del = 0
@@ -56,7 +56,7 @@
         select *
         from items
         where id = #{id}
-          and is_del = 0
+        and is_del = 0
     </select>
 
     <!--查询所有记录-->
@@ -65,7 +65,7 @@
 
         <include refid="getItemsWhere"/>
 
-        <if test="page.page>=0 and page.size>0">
+        <if test="page.page >= 0 and page.size > 0">
             limit #{page.start},#{page.size}
         </if>
     </select>
@@ -80,7 +80,7 @@
         select *
         from items
         where name = #{name}
-          and is_del = 0
+        and is_del = 0
     </select>
 
 
@@ -88,16 +88,16 @@
     <update id="editItems">
         update items
         <set>
-            <if test='code!=null and code!=""'>
+            <if test='code != null and code != ""'>
                 code=#{code},
             </if>
-            <if test='name!=null and name!=""'>
+            <if test='name != null and name != ""'>
                 name=#{name},
             </if>
-            <if test='typeId!=null'>
+            <if test='typeId != null'>
                 type_id=#{typeId},
             </if>
-            <if test='status!=null'>
+            <if test='status != null'>
                 status=#{status},
             </if>
         </set>
@@ -111,5 +111,4 @@
         <!-- delete from table where id=#{id} -->
         update items set is_del =1 where id=#{id}
     </delete>
-
 </mapper>

@@ -6,7 +6,7 @@
     <!--增加记录-->
     <insert id="addEmployees" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
         insert into employees(id, name, department_id)
-            value (#{id}, #{name}, #{departmentId})
+        value (#{id}, #{name}, #{departmentId})
     </insert>
 
     <!--映射 将Java类中对应的属性映射到数据库对应的字段 属性名与字段名相同时可不写映射 主键一般用id表示 -->
@@ -30,12 +30,12 @@
         <!-- 根据参数不同组合出不同的SQL语句  动态SQL语句 标签-->
         <where>
             <!-- 编写条件语句   如果where标签中有内容  会自动添加where关键字 -->
-            <if test="employees.name!= null and employees.name!= ''">
+            <if test="employees.name != null and employees.name != ''">
                 <!-- 重新定义参数内容 -->
-                <bind value="'%'+employees.name+'%'" name="nameText"/>
+                <bind value="'%' + employees.name + '%'" name="nameText"/>
                 and name like #{nameText}
             </if>
-            <if test="employees.departmentId!= null">
+            <if test="employees.departmentId != null">
                 and department_id = #{employees.departmentId}
             </if>
             and is_del = 0
@@ -47,7 +47,7 @@
         select *
         from employees
         where id = #{id}
-          and is_del = 0
+        and is_del = 0
     </select>
 
     <!--查询所有记录-->
@@ -56,7 +56,7 @@
 
         <include refid="getEmployeesWhere"/>
 
-        <if test="page.page>=0 and page.size>0">
+        <if test="page.page >= 0 and page.size > 0">
             limit #{page.start},#{page.size}
         </if>
     </select>
@@ -71,17 +71,17 @@
         select *
         from employees
         where name = #{name}
-          and is_del = 0
+        and is_del = 0
     </select>
 
     <!--修改记录-->
     <update id="editEmployees">
         update employees
         <set>
-            <if test='name!=null and name!=""'>
+            <if test='name != null and name != ""'>
                 name=#{name},
             </if>
-            <if test='departmentId!=null'>
+            <if test='departmentId != null'>
                 department_id=#{departmentId},
             </if>
         </set>
@@ -95,5 +95,4 @@
         <!-- delete from table where id=#{id} -->
         update employees set is_del =1 where id=#{id}
     </delete>
-
 </mapper>

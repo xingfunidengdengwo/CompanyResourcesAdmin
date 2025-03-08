@@ -3,13 +3,12 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.admin.dao.IBorrowReturnDao">
-
     <!--增加记录-->
     <insert id="addBorrowReturn" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
         insert into borrow_return(item_id, operator_id, employee_id, borrow_time, expected_return_time,
-                                  actual_return_time)
-            value (#{itemId}, #{operatorId}, #{employeeId}, #{borrowTime}, #{expectedReturnTime}, #{actualReturnTime})
-#         在添加和修改借还记录时，前端页面operatorId应该是不可编辑的，且添加时默认值是当前登录系统的operator！！！
+        actual_return_time)
+        value (#{itemId}, #{operatorId}, #{employeeId}, #{borrowTime}, #{expectedReturnTime}, #{actualReturnTime})
+        # 在添加和修改借还记录时，前端页面operatorId应该是不可编辑的，且添加时默认值是当前登录系统的operator！！！
     </insert>
 
     <!--映射 将Java类中对应的属性映射到数据库对应的字段 属性名与字段名相同时可不写映射 主键一般用id表示 -->
@@ -26,26 +25,25 @@
                      property="operators"/>
         <association column="employee_id" javaType="com.admin.bean.Employees" select="getEmployees"
                      property="employees"/>
-
     </resultMap>
 
     <select id="getItems" resultType="com.admin.bean.Items">
         select *
         from items
         where id = #{itemId}
-          and is_del = 0
+        and is_del = 0
     </select>
     <select id="getOperators" resultType="com.admin.bean.Operators">
         select *
         from operators
         where id = #{operatorId}
-          and is_del = 0
+        and is_del = 0
     </select>
     <select id="getEmployees" resultType="com.admin.bean.Employees">
         select *
         from employees
         where id = #{employeeId}
-          and is_del = 0
+        and is_del = 0
     </select>
 
 
@@ -55,27 +53,27 @@
         <!-- 根据参数不同组合出不同的SQL语句  动态SQL语句 标签-->
         <where>
             <!-- 编写条件语句   如果where标签中有内容  会自动添加where关键字 -->
-            <if test="borrowReturn.itemId!= null and borrowReturn.itemId!= ''">
+            <if test="borrowReturn.itemId != null and borrowReturn.itemId != ''">
                 <!-- 重新定义参数内容 -->
-                <bind value="'%'+borrowReturn.itemId+'%'" name="itemIdText"/>
+                <bind value="'%' + borrowReturn.itemId + '%'" name="itemIdText"/>
                 and item_id like #{itemIdText}
             </if>
-            <if test="borrowReturn.operatorId!= null and borrowReturn.operatorId!= ''">
-                <bind value="'%'+borrowReturn.operatorId+'%'" name="operatorIdText"/>
+            <if test="borrowReturn.operatorId != null and borrowReturn.operatorId != ''">
+                <bind value="'%' + borrowReturn.operatorId + '%'" name="operatorIdText"/>
                 and operator_id like #{operatorIdText}
             </if>
-            <if test="borrowReturn.employeeId!= null and borrowReturn.employeeId!= ''">
+            <if test="borrowReturn.employeeId != null and borrowReturn.employeeId != ''">
                 <!-- 重新定义参数内容 -->
-                <bind value="'%'+borrowReturn.employeeId+'%'" name="employeeIdText"/>
+                <bind value="'%' + borrowReturn.employeeId + '%'" name="employeeIdText"/>
                 and employee_id like #{employeeIdText}
             </if>
-            <if test="borrowReturn.borrowTime!= null">
+            <if test="borrowReturn.borrowTime != null">
                 and borrow_time = #{borrowReturn.borrowTime}
             </if>
-            <if test="borrowReturn.expectedReturnTime!= null">
+            <if test="borrowReturn.expectedReturnTime != null">
                 and expected_return_time = #{borrowReturn.expectedReturnTime}
             </if>
-            <if test="borrowReturn.actualReturnTime!= null">
+            <if test="borrowReturn.actualReturnTime != null">
                 and actual_return_time = #{borrowReturn.actualReturnTime}
             </if>
             and is_del = 0
@@ -87,7 +85,7 @@
         select *
         from borrow_return
         where id = #{id}
-          and is_del = 0
+        and is_del = 0
     </select>
 
     <!--根据items表id找到borrow_return表的id-->
@@ -95,8 +93,8 @@
         select id
         from borrow_return
         where item_id = #{id}
-          and is_del = 0
-          and actual_return_time IS NULL
+        and is_del = 0
+        and actual_return_time IS NULL
     </select>
 
     <!--查询所有记录-->
@@ -105,10 +103,9 @@
 
         <include refid="getBorrowReturnWhere"/>
 
-        <if test="page.page>=0 and page.size>0">
+        <if test="page.page >= 0 and page.size > 0">
             limit #{page.start},#{page.size}
         </if>
-
     </select>
 
     <!--分页计算行数-->
@@ -129,7 +126,7 @@
         from borrow_return
 
         <include refid="getUnreturnedWhere"/>
-        <if test="page.page>=0 and page.size>0">
+        <if test="page.page >= 0 and page.size > 0">
             limit #{page.start},#{page.size}
         </if>
     </select>
@@ -142,24 +139,24 @@
 
             and is_del = 0
             <!-- 编写条件语句   如果where标签中有内容  会自动添加where关键字 -->
-            <if test="borrowReturn.itemId!= null and borrowReturn.itemId!= ''">
+            <if test="borrowReturn.itemId != null and borrowReturn.itemId != ''">
                 <!-- 重新定义参数内容 -->
-                <bind value="'%'+borrowReturn.itemId+'%'" name="itemIdText"/>
+                <bind value="'%' + borrowReturn.itemId + '%'" name="itemIdText"/>
                 and item_id like #{itemIdText}
             </if>
-            <if test="borrowReturn.operatorId!= null and borrowReturn.operatorId!= ''">
-                <bind value="'%'+borrowReturn.operatorId+'%'" name="operatorIdText"/>
+            <if test="borrowReturn.operatorId != null and borrowReturn.operatorId != ''">
+                <bind value="'%' + borrowReturn.operatorId + '%'" name="operatorIdText"/>
                 and operator_id like #{operatorIdText}
             </if>
-            <if test="borrowReturn.employeeId!= null and borrowReturn.employeeId!= ''">
+            <if test="borrowReturn.employeeId != null and borrowReturn.employeeId != ''">
                 <!-- 重新定义参数内容 -->
-                <bind value="'%'+borrowReturn.employeeId+'%'" name="employeeIdText"/>
+                <bind value="'%' + borrowReturn.employeeId + '%'" name="employeeIdText"/>
                 and employee_id like #{employeeIdText}
             </if>
-            <if test="borrowReturn.borrowTime!= null">
+            <if test="borrowReturn.borrowTime != null">
                 and borrow_time = #{borrowReturn.borrowTime}
             </if>
-            <if test="borrowReturn.expectedReturnTime!= null">
+            <if test="borrowReturn.expectedReturnTime != null">
                 and expected_return_time = #{borrowReturn.expectedReturnTime}
             </if>
         </where>
@@ -169,22 +166,22 @@
     <update id="editBorrowReturn">
         update Borrow_Return
         <set>
-            <if test='itemId!=null and itemId !=""'>
+            <if test='itemId != null and itemId != ""'>
                 item_id=#{itemId},
             </if>
-            <if test='operatorId!=null and operatorId!=""'>
+            <if test='operatorId != null and operatorId != ""'>
                 operator_id=#{operatorId},
             </if>
-            <if test='employeeId!=null and employeeId !=""'>
+            <if test='employeeId != null and employeeId != ""'>
                 employee_id=#{employeeId},
             </if>
-            <if test='borrowTime!=null'>
+            <if test='borrowTime != null'>
                 borrow_time=#{borrowTime},
             </if>
-            <if test='expectedReturnTime!=null'>
+            <if test='expectedReturnTime != null'>
                 expected_return_time=#{expectedReturnTime},
             </if>
-            <if test='actualReturnTime!=null'>
+            <if test='actualReturnTime != null'>
                 actual_return_time=#{actualReturnTime},
             </if>
         </set>
@@ -198,5 +195,4 @@
         <!-- delete from table where id=#{id} -->
         update borrow_return set is_del =1 where id=#{id}
     </delete>
-
 </mapper>
