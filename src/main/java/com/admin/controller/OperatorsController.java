@@ -166,7 +166,7 @@ public class OperatorsController {
     @PostMapping("sendmsg")
     public CommonResult sendMsg(@RequestBody Operators operators) {
         operators = operatorsService.getOperatorsByName(operators.getName());
-        if (operators.getEmail() != null) {
+        if (operators != null) {
             email.setTo(operators.getEmail());
             try {
                 msgService.sendMsg(Vcode);
