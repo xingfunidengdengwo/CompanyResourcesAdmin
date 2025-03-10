@@ -3,6 +3,7 @@ package com.admin.interceptor;
 import com.admin.common.CommonResult;
 import com.admin.util.JWTUtil;
 import com.alibaba.fastjson.JSON;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,7 +18,10 @@ public class LoginInterceptor implements HandlerInterceptor {
         //在处理Handler之前执行
         // 返回true可以执行对应Handler   返回false则执行不到handler
         //return true/false是springmvc中的运行路线需求   不是回应给浏览器的
-
+        if (response.getStatus() >= HttpStatus.INTERNAL_SERVER_ERROR.value()) {
+            //放行服务器内部错误的报错
+            return true;
+        }
         //验证每个请求是否是登陆状态
         //token在http的header中   叫Authorization
         System.out.println("请求方式:"+request.getMethod());
