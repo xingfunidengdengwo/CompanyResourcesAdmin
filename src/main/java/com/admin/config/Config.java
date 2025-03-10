@@ -23,6 +23,7 @@ public class Config implements WebMvcConfigurer {
     //配置拦截器   让拦截器生效
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(loginInterceptor).addPathPatterns("/**").excludePathPatterns("/dologin", "/operators", STATIC_PATH + "**", "/sendmsg", "/sendregistermsg", "/updatepassword", "/operatorsimg", "/operatorsimg/**", "/checktoken");
+        //将/error路径加入到放行名单，防止开发中服务器内部报错也被拦截
+        registry.addInterceptor(loginInterceptor).addPathPatterns("/**").excludePathPatterns("/dologin", "/operators", STATIC_PATH + "**", "/sendmsg", "/sendregistermsg", "/updatepassword", "/operatorsimg", "/operatorsimg/**", "/checktoken", "/error");
     }
 }

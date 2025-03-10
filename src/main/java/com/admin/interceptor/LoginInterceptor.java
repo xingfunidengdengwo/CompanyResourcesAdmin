@@ -20,6 +20,8 @@ public class LoginInterceptor implements HandlerInterceptor {
 
         //验证每个请求是否是登陆状态
         //token在http的header中   叫Authorization
+        System.out.println("请求方式:"+request.getMethod());
+        System.out.println("请求路径:"+request.getRequestURI());
         String token = request.getHeader("Authorization");
         if (token != null && JWTUtil.verifyToken(token)) {
             //有token token有效 有登陆状态
@@ -31,7 +33,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             CommonResult result = CommonResult.fail(400, "未登录");
             //将数据解析成json
             String json = JSON.toJSONString(result);
-            System.out.println(json);
+            System.out.println("转换为json后的响应内容:"+json);
             //将数据回应
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write(json);
