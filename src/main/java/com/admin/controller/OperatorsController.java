@@ -175,7 +175,7 @@ public class OperatorsController {
             }
             return CommonResult.success();
         } else {
-            return CommonResult.fail(400, "用户不存在,或未设置邮箱");
+            return CommonResult.fail(400, "用户不存在");
         }
     }
 }
