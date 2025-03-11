@@ -39,7 +39,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             String json = JSON.toJSONString(result);
             System.out.println("转换为json后的响应内容:"+json);
             //将数据回应
-            response.setCharacterEncoding("UTF-8");
+            response.setContentType("application/json; charset=utf-8");
             response.getWriter().write(json);
             return false;
         }
