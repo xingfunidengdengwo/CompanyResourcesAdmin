@@ -3,7 +3,6 @@ package com.admin.interceptor;
 import com.admin.common.CommonResult;
 import com.admin.util.JWTUtil;
 import com.alibaba.fastjson.JSON;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -18,14 +17,14 @@ public class LoginInterceptor implements HandlerInterceptor {
         //在处理Handler之前执行
         // 返回true可以执行对应Handler   返回false则执行不到handler
         //return true/false是springmvc中的运行路线需求   不是回应给浏览器的
-        if (response.getStatus() >= HttpStatus.INTERNAL_SERVER_ERROR.value()) {
+        if (request.getRequestURI().equals("/error")) {
             //放行服务器内部错误的报错
             return true;
         }
+        System.out.println("请求方式:" + request.getMethod());
+        System.out.println("请求路径:" + request.getRequestURI());
         //验证每个请求是否是登陆状态
         //token在http的header中   叫Authorization
-        System.out.println("请求方式:"+request.getMethod());
-        System.out.println("请求路径:"+request.getRequestURI());
         String token = request.getHeader("Authorization");
         if (token != null && JWTUtil.verifyToken(token)) {
             //有token token有效 有登陆状态
@@ -37,7 +36,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             CommonResult result = CommonResult.fail(400, "未登录");
             //将数据解析成json
             String json = JSON.toJSONString(result);
-            System.out.println("转换为json后的响应内容:"+json);
+            System.out.println("转换为json后的响应内容:" + json);
             //将数据回应
             response.setContentType("application/json; charset=utf-8");
             response.getWriter().write(json);
