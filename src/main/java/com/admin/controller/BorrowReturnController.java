@@ -32,7 +32,6 @@ public class BorrowReturnController {
         int count = borrowReturnService.getCount(borrowReturn);
         HashMap map = new HashMap();
         map.put("list", list);
-        System.out.println(list);
         map.put("count", count);
         return CommonResult.success(map);
     }
@@ -44,7 +43,6 @@ public class BorrowReturnController {
         int count = borrowReturnService.getCountUnreturned(borrowReturn);
         HashMap map = new HashMap();
         map.put("list", list);
-        System.out.println(list);
         map.put("count", count);
         return CommonResult.success(map);
     }
