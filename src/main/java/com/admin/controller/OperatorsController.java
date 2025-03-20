@@ -113,7 +113,7 @@ public class OperatorsController {
         Map<String, Object> token = operatorsService.doLogin(operators);
 
         if (token.isEmpty()) {
-            return CommonResult.fail(403, "登录失败");
+            return CommonResult.fail(403, "登录失败,请检查用户名或密码是否正确");
         } else {
             //此处返回了一个包含了token以及用户数据的Map对象“token”
             return CommonResult.success(200, "登录成功", token);
