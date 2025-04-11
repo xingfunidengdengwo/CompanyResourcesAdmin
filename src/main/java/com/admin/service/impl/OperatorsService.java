@@ -62,9 +62,9 @@ public class OperatorsService implements IOperatorsService {
 
     @Override
     public Map<String, Object> doLogin(Operators operators) {
-        // 1.获取数据库中的数据 byname
+        // 1.获取数据库中的数据 byName
         List<Operators> list = operatorsDao.getOperatorsByName(operators.getName());
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         if (list.size() == 1) {
             Operators operators_data = list.get(0);
             // 2.比较密码
@@ -126,7 +126,7 @@ public class OperatorsService implements IOperatorsService {
     @Override
     public int addOperators(Operators operators) {
         List<Operators> list = operatorsDao.getOperatorsByName(operators.getName());
-        if (list.size() == 0) {
+        if (list.isEmpty()) {
             operatorsDao.addOperators(operators);
             return 1;
         } else {
